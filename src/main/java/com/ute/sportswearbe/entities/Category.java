@@ -12,13 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/3/2022
- * Time: 9:27 PM
- * Filename: Category
- */
 @Getter
 @Setter
 @NoArgsConstructor

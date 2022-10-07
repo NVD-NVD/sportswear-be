@@ -5,13 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:04 PM
- * Filename: UserAuthenticationToken.java
- */
 public class UserAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;

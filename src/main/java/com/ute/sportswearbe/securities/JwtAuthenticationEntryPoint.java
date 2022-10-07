@@ -10,13 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:03 PM
- * Filename: JwtUserDetails.java
- */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 

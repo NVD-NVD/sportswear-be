@@ -7,13 +7,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:05 PM
- * Filename: TokenDetails.java
- */
 @Setter
 @Getter
 @NoArgsConstructor

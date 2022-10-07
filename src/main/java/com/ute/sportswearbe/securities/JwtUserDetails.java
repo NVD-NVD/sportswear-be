@@ -5,13 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:03 PM
- * Filename: JwtUserDetails.java
- */
 public class JwtUserDetails implements UserDetails {
     private final String userName;
 

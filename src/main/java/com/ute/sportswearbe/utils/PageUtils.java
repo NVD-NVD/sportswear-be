@@ -4,13 +4,6 @@ import org.springframework.data.domain.*;
 
 import java.util.List;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/2/2022
- * Time: 8:42 PM
- * Filename: PageUtils
- */
 public class PageUtils {
     public static Pageable createPageable(int page, int size, String sort, String sortColumn) {
         Sort sortable = Sort.by(sortColumn).descending();

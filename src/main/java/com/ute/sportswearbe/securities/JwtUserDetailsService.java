@@ -10,13 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:03 PM
- * Filename: JwtUserDetails.java
- */
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 

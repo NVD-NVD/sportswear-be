@@ -1,11 +1,13 @@
 package com.ute.sportswearbe.config;
 
+import com.cloudinary.Cloudinary;
 import com.ute.sportswearbe.securities.JwtAuthenticationEntryPoint;
 import com.ute.sportswearbe.securities.JwtTokenFilter;
 import com.ute.sportswearbe.securities.JwtTokenUtils;
 import com.ute.sportswearbe.securities.JwtUserDetailsService;
 import com.ute.sportswearbe.securities.provider.UserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -18,15 +20,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:09 PM
- * Filename: WebSecurityConfig.java
- */
+import java.util.HashMap;
+import java.util.Map;
+
 @Order
 @Configuration
 @EnableWebSecurity
@@ -41,6 +41,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -62,7 +67,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/rest/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/rest/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/rest/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 

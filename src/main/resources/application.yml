@@ -26,6 +26,17 @@ jwt:
 default:
   token_type: "Bearer"
   password: 12345678
+  avatar: "https://res.cloudinary.com/dw0tkzfyp/image/upload/v1665110544/uyig6jpaqqzi64hbzzjw.png"
+  updatingInfoBook: "Đang cập nhập"
+
+upload:
+  url: "https://book-store-online-be.herokuapp.com/"
+  part: "/uploads/"
+
+cloudinary:
+  cloud_name: dw0tkzfyp
+  api_key: 731957348138624
+  api_secret: hlYPsGMbQnDbgYbFb9BpM0SFwUs
 
 paging:
   default:

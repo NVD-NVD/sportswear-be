@@ -8,13 +8,6 @@ import lombok.Setter;
 import javax.xml.crypto.Data;
 import java.util.List;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/29/2022
- * Time: 11:18 PM
- * Filename: EmbeddedReviews
- */
 @Getter
 @Setter
 @NoArgsConstructor

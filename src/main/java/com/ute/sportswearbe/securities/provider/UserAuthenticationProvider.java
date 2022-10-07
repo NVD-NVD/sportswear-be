@@ -8,17 +8,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:04 PM
- * Filename: UserAuthenticationToken.java
- */
 public class UserAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtUserDetailsService jwtUserDetailsService;
+
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserAuthenticationProvider(JwtUserDetailsService jwtUserDetailsService) {
         this.jwtUserDetailsService = jwtUserDetailsService;
@@ -39,11 +36,16 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if (!userDetails.isEnabled())
             throw new BadCredentialsException("Tài khoản bị khóa ");
         if (verifyCredentials) { // check username password verify;
-            if (passWord.equals(userDetails.getPassword())) {
-                return new UserAuthenticationToken(phone, passWord, verifyCredentials, userDetails.getAuthorities()); //authenticates
+            if (passwordEncoder.matches(passWord, userDetails.getPassword())) {
+                return new UserAuthenticationToken(phone, passwordEncoder.encode(passWord), verifyCredentials, userDetails.getAuthorities()); //authenticates
             } else { // wrong Password
                 throw new BadCredentialsException("Sai mật khẩu");
             }
+//            if (passWord.equals(userDetails.getPassword())) {
+//                return new UserAuthenticationToken(phone, passWord, verifyCredentials, userDetails.getAuthorities()); //authenticates
+//            } else { // wrong Password
+//                throw new BadCredentialsException("Sai mật khẩu");
+//            }
         } else { // verify google
             return new UserAuthenticationToken(phone, "N/A", verifyCredentials, userDetails.getAuthorities());
         }

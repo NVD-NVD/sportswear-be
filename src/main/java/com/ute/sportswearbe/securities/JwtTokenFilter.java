@@ -15,13 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:03 PM
- * Filename: JwtUserDetails.java
- */
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Autowired

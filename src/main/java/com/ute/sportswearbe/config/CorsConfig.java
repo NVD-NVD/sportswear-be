@@ -5,13 +5,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:09 PM
- * Filename: WebSecurityConfig.java
- */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
     @Override

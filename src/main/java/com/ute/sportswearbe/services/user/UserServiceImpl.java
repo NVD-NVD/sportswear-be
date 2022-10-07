@@ -1,38 +1,43 @@
 package com.ute.sportswearbe.services.user;
 
+import com.ute.sportswearbe.dtos.PasswordDto;
 import com.ute.sportswearbe.dtos.user.UserCoreDto;
 import com.ute.sportswearbe.entities.User;
 import com.ute.sportswearbe.exceptions.InvalidException;
 import com.ute.sportswearbe.exceptions.NotFoundException;
 import com.ute.sportswearbe.repositories.UserRepository;
+import com.ute.sportswearbe.services.cloudinary.CloudinaryService;
 import com.ute.sportswearbe.utils.PageUtils;
 import com.ute.sportswearbe.utils.enums.EnumRole;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:13 PM
- * Filename: UserServiceImpl
- */
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    private CloudinaryService cloudinaryService;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
@@ -88,6 +93,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public User createNewUser(UserCoreDto dto) {
         User user = convertUserCoreDto(dto);
+        user.setCreatedOn(new Date());
+        user.setUpdateOn(new Date());
         user.setRoles(Collections.singletonList(EnumRole.ROLE_MEMBER.name()));
         userRepository.save(user);
         return user;
@@ -96,12 +103,59 @@ public class UserServiceImpl implements UserService{
     @Override
     public User createAdmin(UserCoreDto dto) {
         User user = convertUserCoreDto(dto);
+        user.setCreatedOn(new Date());
+        user.setUpdateOn(new Date());
         user.setRoles(Arrays.asList(EnumRole.ROLE_ADMIN.name(), EnumRole.ROLE_MEMBER.name()));
         userRepository.save(user);
         return user;
     }
 
-    public User convertUserCoreDto(UserCoreDto dto) {
+    @Override
+    public User updateUser(Principal principal, UserCoreDto dto) {
+        User user = getUserByPrincipal(principal);
+        user.setUpdateOn(new Date());
+        user.setEmail(dto.getEmail());
+        user.setPhone(dto.getPhone());
+
+        user.setName(dto.getName());
+        user.setBirthday(dto.getBirthday());
+        user.setGender(dto.getGender());
+        user.setAddress(dto.getAddress());
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User updateAvatar(Principal principal, MultipartFile file) {
+        User user = getUserByPrincipal(principal);
+        user.setAvatar(cloudinaryService.uploadFile(file));
+        return user;
+    }
+
+    @Override
+    public User changeStatus(String id) {
+        User user = getUserByID(id);
+        user.setEnable(!user.isEnable());
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User changePassword(Principal principal, PasswordDto dto) {
+        User user = getUserByPrincipal(principal);
+        if (!passwordEncoder.matches(dto.getOldPass(), user.getPassword()))
+            throw  new InvalidException("Password không đúng");
+        user.setPassword(passwordEncoder.encode(dto.getNewPass()));
+        userRepository.save(user);
+        return user;
+    }
+
+    //    @Override
+//    public User changePassword(String id, Principal principal, PasswordDto dto) {
+//        return null;
+//    }
+
+    private User convertUserCoreDto(UserCoreDto dto) {
         if (ObjectUtils.isEmpty(dto.getEmail())) {
             throw new InvalidException("Email không được bỏ trống");
         }

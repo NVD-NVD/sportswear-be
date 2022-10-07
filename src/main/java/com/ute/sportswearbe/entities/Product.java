@@ -13,13 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/2/2022
- * Time: 11:31 PM
- * Filename: ProductRepository
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,7 +29,7 @@ public class Product {
 
     private List<String> images = new ArrayList<>();
 
-    private EmbeddedOption option;
+    private EmbeddedOption options;
 
     private List<String> types;
 

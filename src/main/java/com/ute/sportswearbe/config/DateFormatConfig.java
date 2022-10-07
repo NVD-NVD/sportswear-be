@@ -17,13 +17,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/26/2022
- * Time: 7:13 PM
- * Filename: DateFormatConfig
- */
 @JsonFormat
 public class DateFormatConfig {
     @Value("${spring.jackson.date-format:dd-MM-yyyy HH:mm:ss}")

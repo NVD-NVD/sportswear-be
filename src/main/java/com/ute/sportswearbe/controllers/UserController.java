@@ -1,25 +1,27 @@
 package com.ute.sportswearbe.controllers;
 
+import com.ute.sportswearbe.dtos.PasswordDto;
+import com.ute.sportswearbe.dtos.user.UserCoreDto;
 import com.ute.sportswearbe.entities.User;
+import com.ute.sportswearbe.services.cloudinary.CloudinaryService;
+import com.ute.sportswearbe.services.file.FilesStorageService;
 import com.ute.sportswearbe.services.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/8/2022
- * Time: 9:10 PM
- * Filename: UserController
- */
 @RestController
 @RequestMapping("/rest/users")
 public class UserController {
@@ -27,46 +29,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /***
-    *  @author: NVD-NVD
-    *  @param principal
-    *  @return : User info
-    */
-    @ApiOperation(value = "Get user info by principal", notes = "For user")
+    @ApiOperation(value = "Get user info by principal", notes = "User")
     @GetMapping
     @PreAuthorize("hasRole('MEMBER')")
     public ResponseEntity<User> getUserByPrincipal(Principal principal){
         return new ResponseEntity<>(userService.getUserByPrincipal(principal), HttpStatus.OK);
     }
-    /***
-    *  @author: NVD-NVD
-    *  @param id: user id
-    *  @return : user info
-    */
-    @ApiOperation(value = "Admin get user info", notes = "For ADMIN")
+
+    @ApiOperation(value = "Admin get user info", notes = "Admin")
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserByID(@PathVariable String id){
         return new ResponseEntity<>(userService.getUserByID(id), HttpStatus.OK);
     }
-    /***
-    *  @author: NVD-NVD
-    *  @param :
-    *  @return : List user
-    */
-    @ApiOperation(value = "Admin get all users", notes = "For ADMIN")
+
+    @ApiOperation(value = "Admin get all users", notes = "Admin")
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUser(){
         return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
 
-    /***
-    *  @author: NVD-NVD
-    *  @param :
-    *  @return :
-    */
-    @ApiOperation(value = "Get user paging", notes = "For ADMIN")
+    @ApiOperation(value = "Get user paging", notes = "Admin")
     @GetMapping("/paging")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<User>> getUserPaging(
@@ -77,5 +61,52 @@ public class UserController {
             @RequestParam(name = "column", required = false, defaultValue = "timestamp") String column
     ){
         return new ResponseEntity<>(userService.getUserPaging(search, page, size, sort, column), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Create a new User", notes = "Admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/create")
+    public ResponseEntity<User> createNewUser(@RequestBody UserCoreDto dto) {
+        return new ResponseEntity<>(userService.createNewUser(dto), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Create a new Admin", notes = "Admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/createNewAdmin")
+    public ResponseEntity<User> createNewAdmin(@RequestBody UserCoreDto dto) {
+        return new ResponseEntity<>(userService.createAdmin(dto), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "User update thông tin", notes = "User")
+    @PreAuthorize("hasRole('MEMBER')")
+    @PutMapping("/update/info")
+    public ResponseEntity<User> updateUser(
+            Principal principal, @RequestBody UserCoreDto dto) {
+        return new ResponseEntity<>(userService.updateUser(principal, dto), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Update avatar", notes = "User")
+    @PreAuthorize("hasRole('MEMBER')")
+    @PutMapping("/update/avatar")
+    public ResponseEntity<User> updateAvatar(
+            Principal principal, @RequestParam(name = "file") MultipartFile file) {
+        return new ResponseEntity<>(userService.updateAvatar(principal, file), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Admin thay đổi trạng thái kích hoạt tài khoản user", notes = "Admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> changeStatus(@PathVariable String id) {
+        return new ResponseEntity<>(userService.changeStatus(id), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "User change password", notes = "User")
+    @PreAuthorize("hasRole('MEMBER')")
+    @PutMapping(value = "/password")
+    @ResponseBody
+    public ResponseEntity<User> changePassword(
+            Principal principal,
+            @RequestBody PasswordDto dto){
+        return new ResponseEntity<>(userService.changePassword(principal, dto) , HttpStatus.OK);
     }
 }

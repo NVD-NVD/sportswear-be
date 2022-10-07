@@ -1,19 +1,14 @@
 package com.ute.sportswearbe.services.user;
 
+import com.ute.sportswearbe.dtos.PasswordDto;
 import com.ute.sportswearbe.dtos.user.UserCoreDto;
 import com.ute.sportswearbe.entities.User;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:13 PM
- * Filename: UserService
- */
 public interface UserService {
     List<User> getAllUser();
 
@@ -35,4 +30,11 @@ public interface UserService {
 
     User createAdmin(UserCoreDto dto);
 
+    User updateUser(Principal principal, UserCoreDto dto);
+
+    User updateAvatar(Principal principal, MultipartFile file);
+
+    User changeStatus(String id);
+
+    User changePassword(Principal principal, PasswordDto dto);
 }

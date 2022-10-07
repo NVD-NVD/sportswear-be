@@ -3,13 +3,6 @@ package com.ute.sportswearbe.utils.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/3/2022
- * Time: 6:25 PM
- * Filename: PhoneValidator
- */
 public class PhoneValidator implements ConstraintValidator<Phone, String> {
     @Override
     public void initialize(Phone paramA) {

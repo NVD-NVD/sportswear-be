@@ -9,13 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/3/2022
- * Time: 9:31 PM
- * Filename: Payment
- */
 @Getter
 @Setter
 @NoArgsConstructor

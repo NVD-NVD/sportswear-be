@@ -9,13 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:07 PM
- * Filename: UserRepository.java
- */
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 

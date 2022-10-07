@@ -19,19 +19,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
 import java.util.HashMap;
 
-/**
- * Created by: IntelliJ IDE
- * User: NVD-NVD
- * Date: 9/1/2022
- * Time: 4:10 PM
- * Filename: AuthenticationController
- */
 @RestController
 @RequestMapping("/rest/auth")
 public class AuthenticationController {
@@ -44,6 +38,9 @@ public class AuthenticationController {
 
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserService userService;
@@ -65,6 +62,7 @@ public class AuthenticationController {
     @ApiOperation(value = "Create a new account")
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserCoreDto dto) throws Exception{
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         return ResponseEntity.ok(userService.createNewUser(dto));
     }
 
@@ -73,7 +71,7 @@ public class AuthenticationController {
      * @param dto: Dto login by phone, password
      * @return: token detail when user login success
      */
-    @ApiOperation(value = "Login email, password")
+    @ApiOperation(value = "Login email, password", notes = "User")
     @PostMapping("/login")
     public ResponseEntity<TokenDetails> login(@RequestBody AccountDto dto) {
         UserAuthenticationToken authenticationToken = new UserAuthenticationToken(
@@ -129,7 +127,7 @@ public class AuthenticationController {
      * @param principal
      * @return: Test login
      */
-    @ApiOperation(value = "Test security")
+    @ApiOperation(value = "Test security", notes = "User")
     @PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
     @GetMapping("/hello")
     public ResponseEntity<String> sayHello(Principal principal) {
