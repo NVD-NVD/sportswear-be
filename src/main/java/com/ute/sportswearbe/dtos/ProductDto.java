@@ -2,6 +2,7 @@ package com.ute.sportswearbe.dtos;
 
 import com.ute.sportswearbe.entities.embedded.*;
 import com.ute.sportswearbe.entities.embedded.reviews.EmbeddedReviews;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,33 +20,44 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDto {
     @NotNull(message = "Title can 'not null'")
+    @ApiModelProperty(notes = "title", example = "Juventus BD1035", required = true)
     private String title;
 
+    @ApiModelProperty(notes = "descriptions", example = "", required = true)
     private List<EmbeddedDescription> descriptions = new ArrayList<>();
 
+    @ApiModelProperty(notes = "options", example = "", required = true)
     private EmbeddedOption options;
 
+    @ApiModelProperty(notes = "types", example = "", required = true)
     private List<String> types;
 
+    @ApiModelProperty(notes = "trademark", example = "Juventus", required = true)
     private String trademark; // nhãn hiệu
 
-    private String producer;
+    @ApiModelProperty(notes = "origin", example = "China", required = true)
+    private String origin;// nguồn gốc
 
-    private EmbeddedOrigin origin;// nguồn gốc
-
-    private List<EmbeddedPrice> price = new ArrayList<>();
+    @ApiModelProperty(notes = "price", example = "", required = true)
+    private EmbeddedPrice price;
 
     @Min(value = 0, message = "Discount không thể nhỏ hơn 0%")
     @Max(value = 100, message = "Discount không thể lớn hơn 100%")
+    @ApiModelProperty(notes = "discount", example = "10.5", required = true)
     private float discount;
 
+    @ApiModelProperty(notes = "quantity", example = "500", required = true)
     private long quantity;
 
+    @ApiModelProperty(notes = "fallIntoCategories", example = "", required = true)
     private List<EmbeddedCategory> fallIntoCategories = new ArrayList<>();
 
-    private EmbeddedReviews reviews;
+//    @ApiModelProperty(notes = "reviews", example = "", required = true)
+//    private EmbeddedReviews reviews;
 
-    private Date createdOn;
-
-    private Date updateOn;
+//    @ApiModelProperty(notes = "createdOn", example = "09-10-2022", required = true)
+//    private Date createdOn;
+//
+//    @ApiModelProperty(notes = "updateOn", example = "09-10-2022", required = true)
+//    private Date updateOn;
 }

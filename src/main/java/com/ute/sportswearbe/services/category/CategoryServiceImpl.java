@@ -3,33 +3,45 @@ package com.ute.sportswearbe.services.category;
 import com.ute.sportswearbe.dtos.CategoryDto;
 import com.ute.sportswearbe.entities.Category;
 import com.ute.sportswearbe.entities.Product;
+import com.ute.sportswearbe.exceptions.InvalidException;
+import com.ute.sportswearbe.exceptions.ServerException;
+import com.ute.sportswearbe.repositories.CategoryRepository;
+import com.ute.sportswearbe.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
 @Service
 public class CategoryServiceImpl implements CategoryService{
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
-    public Category getCategoryByName(String name) {
-        return null;
+    public Category getCategoryByTitle(String title) {
+        return categoryRepository.getCategoryByTitle(title).orElse(null);
     }
 
     @Override
     public Category getCategoryById(String id) {
-        return null;
+        return categoryRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Category> getAllCategory() {
-        return null;
+        return categoryRepository.findAll();
     }
 
     @Override
     public Page<Category> getCategoryPaging(String search, int page, int size, String sort, String column) {
-        return null;
+        Pageable pageable = PageUtils.createPageable(page, size, sort, column);
+        return categoryRepository.getCategoryPaging(search, pageable);
     }
 
     @Override
@@ -38,13 +50,19 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public Category createNewCategory(String name) {
-        return null;
+    public Category createNewCategory(String title) {
+        if (getCategoryByTitle(title)!= null)
+            throw new InvalidException(String.format("Category có Title %s đã tồn tại.", title));
+        return save(new Category(null, title, null, new Date(), new Date(), true));
     }
 
     @Override
     public Category deleteCategory(String id) {
-        return null;
+        Category category = getCategoryById(id);
+        if (category == null)
+            throw new InvalidException(String.format("Category có ID %s không tồn tại.", id));
+        category.setEnable(false);
+        return save(category);
     }
 
     @Override
@@ -74,11 +92,16 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category save(Category category) {
-        return null;
+        return categoryRepository.save(category);
     }
 
     @Override
-    public List<CategoryDto> getListNameCategory() {
-        return null;
+    public List<String> getListNameCategory() {
+        List<Category> categories = categoryRepository.findAll();
+        List<String> titles = new ArrayList<>();
+        for (int i = 0; i < categories.size(); i++) {
+            titles.set(i, categories.get(i).getTitle());
+        }
+        return titles;
     }
 }

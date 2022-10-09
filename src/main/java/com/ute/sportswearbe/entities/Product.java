@@ -38,11 +38,9 @@ public class Product {
 
     private String trademark; // nhãn hiệu
 
-    private String producer;
+    private String origin;// nguồn gốc
 
-    private EmbeddedOrigin origin;// nguồn gốc
-
-    private List<EmbeddedPrice> price = new ArrayList<>();
+    private EmbeddedPrice price;
 
     @Min(value = 0, message = "Discount không thể nhỏ hơn 0%")
     @Max(value = 100, message = "Discount không thể lớn hơn 100%")

@@ -3,9 +3,10 @@ spring:
     name: sportswear-be
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: sportswear-be-database
+      uri: mongodb+srv://NVD-NVD:yFZ6Nuk5mg4mhqiY@cluster0.7hkjpog.mongodb.net/?retryWrites=true&w=majority
+#      host: localhost
+#      port: 27017
+      database: sportswear-database
   servlet:
     multipart:
       enabled: true

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface CategoryService {
-    Category getCategoryByName(String name);
+    Category getCategoryByTitle(String Title);
 
     Category getCategoryById(String id);
 
@@ -34,5 +34,5 @@ public interface CategoryService {
 
     Category save(Category category);
 
-    List<CategoryDto> getListNameCategory();
+    List<String> getListNameCategory();
 }

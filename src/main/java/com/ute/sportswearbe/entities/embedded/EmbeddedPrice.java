@@ -1,5 +1,6 @@
 package com.ute.sportswearbe.entities.embedded;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmbeddedPrice {
-    private String currency;
-    @NotNull
-    private String price;
+    @ApiModelProperty(notes = "currency", example = "VND", required = true)
+    private String currency = "VND";
+
+    @ApiModelProperty(notes = "discount", example = "250000", required = true)
+    private float price;
 }

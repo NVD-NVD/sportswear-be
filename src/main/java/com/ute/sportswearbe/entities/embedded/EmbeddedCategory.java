@@ -1,5 +1,6 @@
 package com.ute.sportswearbe.entities.embedded;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class EmbeddedCategory {
-    @NotNull
+    @ApiModelProperty(notes = "id", value = "", required = false)
     private String id;
-    @NotNull
-    private String name;
+    @ApiModelProperty(notes = "title", example = "New", required = false)
+    private String title;
 }

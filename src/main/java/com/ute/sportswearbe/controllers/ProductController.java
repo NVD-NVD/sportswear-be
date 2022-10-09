@@ -1,10 +1,12 @@
 package com.ute.sportswearbe.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ute.sportswearbe.dtos.ProductDto;
 import com.ute.sportswearbe.entities.Product;
 import com.ute.sportswearbe.services.file.FilesStorageService;
 import com.ute.sportswearbe.services.product.ProductService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -51,12 +53,23 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Admin tạo mới 1 Product", notes = "Admin")
+    @ApiOperation(value = "Admin tạo mới 1 Product.", notes = "Admin\n Lưu ý: " +
+            "1. Chỉ cần gữi hai tham số: files và productDto \n" +
+            "2. Không cần gữi productDtoExam \n" +
+            "3. productDto là String theo cấu trúc JSON của productDtoExam")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Product> createNewProduct(
-            @RequestBody ProductDto dto,
-            @RequestParam(name = "files") MultipartFile[] files) throws HttpMediaTypeException {
+            @RequestBody(required = false) ProductDto productDtoExam,
+            @RequestParam(name = "productDto", required = true) String productDto,
+            @RequestParam MultipartFile[] files) {
+        ProductDto dto = null;
+        System.out.println(productDto);
+        try {
+            dto = new ObjectMapper().readValue(productDto, ProductDto.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(productService.createNewProduct(dto, files), HttpStatus.OK);
     }
 

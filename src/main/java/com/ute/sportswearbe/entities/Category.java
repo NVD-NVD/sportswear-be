@@ -26,7 +26,7 @@ public class Category {
     private String title;
 
     @DBRef
-    private Set<Product> productsOfCategory = new HashSet<>();
+    private List<Product> productsOfCategory = new ArrayList<>();
 
     private Date createdOn;
 

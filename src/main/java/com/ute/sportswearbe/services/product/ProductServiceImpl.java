@@ -61,6 +61,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createNewProduct(ProductDto dto, MultipartFile[] images) {
         Product product = convertDtoToProduct(dto, images);
+        List<EmbeddedCategory> embeddedCategoryList = dto.getFallIntoCategories();
+        embeddedCategoryList.forEach(
+                (e) -> {
+                    Category category = new Category();
+                    if (e.getId().isEmpty() && !e.getTitle().isEmpty()) {
+                        if (categoryService.getCategoryByTitle(e.getTitle()) == null) {
+                            category = categoryService.save(new Category(null,e.getTitle(),null, new Date(), new Date(),true));
+                        }else {
+                            category = categoryService.getCategoryByTitle(e.getTitle());
+                        }
+                        e.setId(category.getId());
+                        category = categoryService.getCategoryById(e.getId());
+                        List<Product> products = new ArrayList<>();
+                        products.addAll(category.getProductsOfCategory());
+                        products.add(product);
+                        category.setProductsOfCategory(products);
+                        categoryService.updateCategory(category);
+                    }
+                });
         return save(product);
     }
 
@@ -84,20 +103,36 @@ public class ProductServiceImpl implements ProductService {
         product.setOptions(dto.getOptions());
         product.setTypes(dto.getTypes());
         product.setTrademark(dto.getTrademark());
-        product.setProducer(dto.getProducer());
         product.setOrigin(dto.getOrigin());
         product.setPrice(dto.getPrice());
         product.setDiscount(dto.getDiscount());
         product.setQuantity(dto.getQuantity());
         product.setFallIntoCategories(dto.getFallIntoCategories());
-        product.setReviews(null);
+        product.setReviews(dto.getReviews());
+
+        Iterator<String> iterator = product.getImages().iterator();
         List<String> list = dto.getImages();
-        list.addAll(cloudinaryService.uploadListImages(images));
-        product.setImages(cloudinaryService.uploadListImages(images));
-        product.setCreatedOn(new Date());
+        while (iterator.hasNext()){
+            String img = iterator.next();
+            boolean flag = false;
+            for (int i = 0; i < list.size(); i++) {
+                if (img.equals(list.get(i))) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag)
+                iterator.remove();
+        }
+
+        if (images.length > 0) {
+            list.addAll(cloudinaryService.uploadListImages(images));
+            product.setImages(cloudinaryService.uploadListImages(images));
+        }
+        product.setCreatedOn(dto.getCreatedOn());
         product.setUpdateOn(new Date());
 
-        return null;
+        return save(product);
     }
 
     @Override
@@ -123,7 +158,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product removeCategoryFromProduct(String proId, List<String> cateId) {
-        return null;
+        Product product = getProductById(proId);
+
+        Iterator<EmbeddedCategory> iterator = product.getFallIntoCategories().iterator();
+        while (iterator.hasNext()){
+            EmbeddedCategory emCate = iterator.next();
+            for (int i = 0; i < cateId.size(); i++) {
+                if (emCate.equals(cateId.get(i))) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+
+        return save(product);
     }
 
     @Override
@@ -149,7 +197,7 @@ public class ProductServiceImpl implements ProductService {
             pImages.removeIf(img -> img.equals(image));
         }
         product.setImages(pImages);
-        return product;
+        return save(product);
     }
 
     @Override
@@ -176,7 +224,6 @@ public class ProductServiceImpl implements ProductService {
         product.setOptions(dto.getOptions());
         product.setTypes(dto.getTypes());
         product.setTrademark(dto.getTrademark());
-        product.setProducer(dto.getProducer());
         product.setOrigin(dto.getOrigin());
         product.setPrice(dto.getPrice());
         product.setDiscount(dto.getDiscount());

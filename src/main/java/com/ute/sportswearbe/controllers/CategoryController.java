@@ -28,7 +28,7 @@ public class CategoryController {
 
     @ApiOperation(value = "Get list name Category")
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getListNameCategory(){
+    public ResponseEntity<List<String>> getListNameCategory(){
         return new ResponseEntity<>(categoryService.getListNameCategory(), HttpStatus.OK);
     }
 
