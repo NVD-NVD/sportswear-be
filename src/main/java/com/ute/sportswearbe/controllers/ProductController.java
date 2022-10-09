@@ -71,7 +71,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(
-            @PathVariable String id, @RequestBody ProductDto dto,
+            @PathVariable String id, @RequestBody Product dto,
             @RequestParam(name = "files") MultipartFile[] files){
         return new ResponseEntity<>(productService.updateProduct(id, dto, files), HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package com.ute.sportswearbe.entities;
 
 import com.ute.sportswearbe.entities.embedded.*;
+import com.ute.sportswearbe.entities.embedded.reviews.EmbeddedReviews;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +42,11 @@ public class Product {
 
     private EmbeddedOrigin origin;// nguồn gốc
 
-    private List<EmbeddedPrice> prices = new ArrayList<>();
+    private List<EmbeddedPrice> price = new ArrayList<>();
+
+    @Min(value = 0, message = "Discount không thể nhỏ hơn 0%")
+    @Max(value = 100, message = "Discount không thể lớn hơn 100%")
+    private float discount = 0;
 
     private long quantity;
 

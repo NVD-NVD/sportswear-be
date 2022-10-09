@@ -17,21 +17,17 @@ public interface ProductService {
 
     Page<Product> getProductPaging(String search, int page, int size, String sort, String column);
 
-    List<Product> getAllProductFromCategory(String name);
+    Product createNewProduct(ProductDto dto, MultipartFile[] images);
 
-    Product createNewProduct(ProductDto dto, MultipartFile[] files);
-
-    Product updateProduct(String id, ProductDto dto, MultipartFile[] files);
+    Product updateProduct(String id, Product dto, MultipartFile[] images);
 
     Product changeStatusProduct(String id);
 
-    Product addCategoryToProduct(String ProductId, String cateId);
+    Product addCategoryToProduct(String proId, List<String> cateId);
 
-    Product removeCategoryFromProduct(String ProductId, String cateId);
+    Product removeCategoryFromProduct(String proId, List<String> cateId);
 
-    List<Product> searchProduct(String search);
-
-    Product addImagesProduct(String id, MultipartFile[] files);
+    Product addImagesProduct(String id, MultipartFile[] images);
 
     Product deleteImagesProduct(String id, List<String> images);
 

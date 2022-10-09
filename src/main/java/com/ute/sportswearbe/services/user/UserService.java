@@ -37,4 +37,6 @@ public interface UserService {
     User changeStatus(String id);
 
     User changePassword(Principal principal, PasswordDto dto);
+
+//    User forgotPassword();
 }

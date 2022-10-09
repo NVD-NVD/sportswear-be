@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -32,6 +34,15 @@ public class CloudinaryServiceImpl implements CloudinaryService{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<String> uploadListImages(MultipartFile[] images) {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < images.length; i++) {
+            list.add(i, uploadFile(images[i]));
+        }
+        return list;
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
