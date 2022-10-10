@@ -3,7 +3,7 @@ spring:
     name: sportswear-be
   data:
     mongodb:
-      uri: mongodb+srv://NVD-NVD:yFZ6Nuk5mg4mhqiY@cluster0.7hkjpog.mongodb.net/?retryWrites=true&w=majority
+      uri: mongodb+srv://NVD-NVD:1gVDdiq1RKs2LVh2@cluster0.7hkjpog.mongodb.net/?retryWrites=true&w=majority
 #      host: localhost
 #      port: 27017
       database: sportswear-database
