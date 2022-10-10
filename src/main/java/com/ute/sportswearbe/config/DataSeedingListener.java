@@ -1,7 +1,10 @@
 package com.ute.sportswearbe.config;
 
+import com.ute.sportswearbe.entities.Category;
 import com.ute.sportswearbe.entities.User;
+import com.ute.sportswearbe.repositories.CategoryRepository;
 import com.ute.sportswearbe.repositories.UserRepository;
+import com.ute.sportswearbe.services.category.CategoryService;
 import com.ute.sportswearbe.services.user.UserService;
 import com.ute.sportswearbe.utils.enums.EnumGender;
 import com.ute.sportswearbe.utils.enums.EnumRole;
@@ -11,22 +14,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class DataSeedingListener implements CommandLineRunner {
+    @Autowired
     private UserService userService;
-
+    @Autowired
     private UserRepository userRepository;
-
+    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    public DataSeedingListener(UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -42,6 +46,16 @@ public class DataSeedingListener implements CommandLineRunner {
             user.setCreatedOn(new Date());
             user.setUpdateOn(new Date());
             userRepository.save(user);
+        }
+        if (categoryRepository.count() == 0){
+            List<Category> list = new ArrayList<>();
+            if (categoryService.getCategoryByTitle("New") == null)
+                list.add(new Category(null, "New", null, new Date(), new Date(), true));
+            else
+                System.out.println("Category NEW đã tồn tại");
+            list.add(categoryService.createNewCategory("Nam"));
+
+            categoryRepository.saveAll(list);
         }
     }
 }

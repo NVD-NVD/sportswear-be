@@ -63,8 +63,8 @@ public class CategoryController {
     @ApiOperation(value = "Admin tạo mới 1 category(name)", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
-    public ResponseEntity<Category> createNewCategory(@RequestParam(name = "name") String name){
-        return new ResponseEntity<>(categoryService.createNewCategory(name), HttpStatus.OK);
+    public ResponseEntity<Category> createNewCategory(@RequestParam(name = "title") String title){
+        return new ResponseEntity<>(categoryService.createNewCategory(title), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Admin delete(xóa dưới db) category", notes = "Admin")

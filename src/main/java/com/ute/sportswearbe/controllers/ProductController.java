@@ -53,14 +53,19 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Admin tạo mới 1 Product.", notes = "Admin\n Lưu ý: " +
-            "1. Chỉ cần gữi hai tham số: files và productDto \n" +
-            "2. Không cần gữi productDtoExam \n" +
-            "3. productDto là String theo cấu trúc JSON của productDtoExam")
+    @ApiOperation(value = "Admin tạo mới 1 Product.(Không gữi kèm hình ảnh)", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Product> createNewProduct(
-            @RequestBody(required = false) ProductDto productDtoExam,
+    @PostMapping(value = "/noImages")
+    public ResponseEntity<Product> createNewProductNoImage(
+            @RequestBody ProductDto productDto){
+        return new ResponseEntity<>(productService.createNewProduct(productDto, null), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Admin tạo mới 1 Product.(Có gữi kèm hình ảnh)", notes = "Admin\n Lưu ý: " +
+            "productDto là kiểu String, có cấu trúc JSON theo ProductDto(Giống với API /rest/products/noImages)" )
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/hasImages" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Product> createNewProductHasImages(
             @RequestParam(name = "productDto", required = true) String productDto,
             @RequestParam MultipartFile[] files) {
         ProductDto dto = null;
@@ -68,6 +73,7 @@ public class ProductController {
         try {
             dto = new ObjectMapper().readValue(productDto, ProductDto.class);
         }catch (Exception e){
+            System.out.println("ObjectMapper error");
             e.printStackTrace();
         }
         return new ResponseEntity<>(productService.createNewProduct(dto, files), HttpStatus.OK);

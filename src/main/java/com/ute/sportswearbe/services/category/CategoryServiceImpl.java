@@ -25,7 +25,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category getCategoryByTitle(String title) {
-        return categoryRepository.getCategoryByTitle(title).orElse(null);
+        return categoryRepository.findCategoryByTitle(title);
+//        return categoryRepository.getCategoryByTitle(title).orElse(null);
     }
 
     @Override
