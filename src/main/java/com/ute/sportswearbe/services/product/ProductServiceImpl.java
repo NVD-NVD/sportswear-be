@@ -42,6 +42,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getProductByIdReturnNull(String id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public Product getProductByTitle(String title) {
         return productRepository.getProductByTitle(title)
                 .orElseThrow(() -> new NotFoundException(String.format("Không tìm thấy sản phẩm có title là %s", title)));

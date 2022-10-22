@@ -20,13 +20,11 @@ public interface CategoryService {
 
     Category createNewCategory(String name);
 
-    Category deleteCategory(String id);
+    String deleteCategory(String id);
 
-    Category createNewCategory(String name, String...id);
+    Category addProductsToCategory(String categoryId, List<String> productID);
 
-    Category addProductToCategory(String categoryId, String...ProductID);
-
-    Category removeProductFromCategory(String categoryId, String...ProductID);
+    Category removeProductsFromCategory(String categoryId, List<String> productID);
 
     Category changeStatusCategory(String id);
 

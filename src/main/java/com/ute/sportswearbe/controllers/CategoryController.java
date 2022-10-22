@@ -51,12 +51,12 @@ public class CategoryController {
 
     @ApiOperation(value = "Get danh sách sản phẩm của 1 Category có phân trang")
     @PostMapping("/paging/{id}")
-    public ResponseEntity<Page<?>> getBookOfCategoryPaging(
+    public ResponseEntity<Page<?>> getproductOfCategoryPaging(
             @PathVariable String id,
             @RequestParam(name = "page", required = false, defaultValue = "${paging.default.page}") int page,
             @RequestParam(name = "size", required = false, defaultValue = "${paging.default.size}") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
-            @RequestParam(name = "column", required = false, defaultValue = "booksOfCategory") String column) {
+            @RequestParam(name = "column", required = false, defaultValue = "productsOfCategory") String column) {
         return new ResponseEntity<>(categoryService.getProductFromCategoryPaging(id, page, size, sort, column), HttpStatus.OK);
     }
 
@@ -70,32 +70,32 @@ public class CategoryController {
     @ApiOperation(value = "Admin delete(xóa dưới db) category", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
-    public ResponseEntity<Category> deleteCategory(@RequestParam(name = "id") String id){
+    public ResponseEntity<String> deleteCategory(@RequestParam(name = "id") String id){
         return new ResponseEntity<>(categoryService.deleteCategory(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Admin thay đổi trạng thái kích hoạt của 1 category", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/status")
+    @PutMapping("/status/change")
     public ResponseEntity<Category> changeStatusCategory(@RequestParam(name = "id") String id){
         return new ResponseEntity<>(categoryService.changeStatusCategory(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Admin update category", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/addBook")
-    public ResponseEntity<Category> addBookToCategory(
+    @PutMapping("/add/products")
+    public ResponseEntity<Category> addProductsToCategory(
             @RequestParam(name = "cateID") String cateId,
-            @RequestParam(name = "bookID") String bookId){
-        return new ResponseEntity<>(categoryService.createNewCategory(cateId), HttpStatus.OK);
+            @RequestParam(name = "proID") List<String> proId){
+        return new ResponseEntity<>(categoryService.addProductsToCategory(cateId, proId), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Admin xóa book khỏi category", notes = "Admin")
+    @ApiOperation(value = "Admin xóa product khỏi category", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/removeBook")
-    public ResponseEntity<Category> removeBookFromCategory(
+    @PostMapping("/remove/products")
+    public ResponseEntity<Category> removeProductsFromCategory(
             @RequestParam(name = "cateID") String cateId,
-            @RequestParam(name = "bookID") String...bookId){
-        return new ResponseEntity<>(categoryService.removeProductFromCategory(cateId, bookId), HttpStatus.OK);
+            @RequestParam(name = "proID") List<String> proId){
+        return new ResponseEntity<>(categoryService.removeProductsFromCategory(cateId, proId), HttpStatus.OK);
     }
 }

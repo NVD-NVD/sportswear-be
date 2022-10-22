@@ -57,4 +57,6 @@ public class Product {
     private Date updateOn;
 
     private boolean enable = true;
+
+
 }
