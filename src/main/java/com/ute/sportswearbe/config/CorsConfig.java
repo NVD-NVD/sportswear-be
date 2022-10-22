@@ -16,8 +16,9 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
                 .exposedHeaders("Content-Disposition", "filename")
-                .allowedMethods("PUT", "DELETE", "POST", "GET", "OPTIONS");
+                .allowedMethods("PUT", "DELETE", "POST", "GET", "OPTIONS")
+                .allowedMethods("*")
+                .allowedOrigins("*");
     }
 }

@@ -24,12 +24,5 @@ public class TestController {
         String url = cloudinaryService.uploadFile(file);
         return "File uploaded successfully: File path :  " + url;
     }
-    @GetMapping("/categories")
-    public ResponseEntity<?> getCategoryByTitle(@RequestParam(name = "title") String title){
-        Category category = categoryService.getCategoryByTitle(title);
-        if (category == null){
-            System.out.println("khong tim thay category");
-        }
-        return new ResponseEntity(category, HttpStatus.OK);
-    }
+
 }
