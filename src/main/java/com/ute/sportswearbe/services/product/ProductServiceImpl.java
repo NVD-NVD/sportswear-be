@@ -66,25 +66,33 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createNewProduct(ProductDto dto, MultipartFile[] images) {
         Product product = convertDtoToProduct(dto, images);
+        product = productRepository.save(product);
         List<EmbeddedCategory> embeddedCategoryList = dto.getFallIntoCategories();
-        embeddedCategoryList.forEach(
-                (e) -> {
-                    Category category = new Category();
-                    if (e.getId().isEmpty() && !e.getTitle().isEmpty()) {
-                        if (categoryService.getCategoryByTitle(e.getTitle()) == null) {
-                            category = categoryService.save(new Category(null,e.getTitle(),null, new Date(), new Date(),true));
-                        }else {
-                            category = categoryService.getCategoryByTitle(e.getTitle());
-                        }
-                        e.setId(category.getId());
-                        category = categoryService.getCategoryById(e.getId());
-                        List<Product> products = new ArrayList<>();
-                        products.addAll(category.getProductsOfCategory());
-                        products.add(product);
-                        category.setProductsOfCategory(products);
-                        categoryService.updateCategory(category);
-                    }
-                });
+        Category category = new Category();
+        for (int i = 0; i < embeddedCategoryList.size(); i++) {
+            EmbeddedCategory e = embeddedCategoryList.get(i);
+            if (e.getId().isEmpty() && !e.getTitle().isEmpty()) {
+                if (categoryService.getCategoryByTitle(e.getTitle()) == null) {
+                    Category cate = new Category();
+                    cate.setTitle(e.getTitle());
+                    cate.setCreatedOn(new Date());
+                    cate.setUpdateOn(new Date());
+                    cate.setEnable(true);
+//                        new Category(null, e.getTitle(), null, new Date(), new Date(), true)
+                    category = categoryService.save(new Category(null, e.getTitle(), null, new Date(), new Date(), true));
+                } else {
+                    category = categoryService.getCategoryByTitle(e.getTitle());
+                }
+                e.setId(category.getId());
+                category = categoryService.getCategoryById(e.getId());
+                List<Product> products = new ArrayList<>();
+                products.addAll(category.getProductsOfCategory());
+                products.add(product);
+                category.setProductsOfCategory(products);
+
+            }
+        }
+        categoryService.updateCategory(category);
         return save(product);
     }
 
@@ -117,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
 
         Iterator<String> iterator = product.getImages().iterator();
         List<String> list = dto.getImages();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             String img = iterator.next();
             boolean flag = false;
             for (int i = 0; i < list.size(); i++) {
@@ -152,7 +160,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = getProductById(proId);
 
         List<EmbeddedCategory> emCate = product.getFallIntoCategories();
-        cateId.forEach( i -> {
+        cateId.forEach(i -> {
             Category category = categoryService.getCategoryById(i);
             emCate.add(new EmbeddedCategory(category.getId(), category.getTitle()));
         });
@@ -166,7 +174,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = getProductById(proId);
 
         Iterator<EmbeddedCategory> iterator = product.getFallIntoCategories().iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             EmbeddedCategory emCate = iterator.next();
             for (int i = 0; i < cateId.size(); i++) {
                 if (emCate.equals(cateId.get(i))) {

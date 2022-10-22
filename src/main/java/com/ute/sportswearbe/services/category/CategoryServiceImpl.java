@@ -131,7 +131,10 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category updateCategory(Category category) {
-        return null;
+        if (category.getId() ==  null){
+            throw new InvalidException(String.format("Category có id %s không tồn tại.", category.getId()));
+        }
+        return save(category);
     }
 
     public Category save(Category category) {
