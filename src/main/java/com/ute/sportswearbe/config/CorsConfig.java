@@ -1,11 +1,13 @@
 package com.ute.sportswearbe.config;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableAutoConfiguration
 public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -18,7 +20,6 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .exposedHeaders("Content-Disposition", "filename")
                 .allowedMethods("PUT", "DELETE", "POST", "GET", "OPTIONS")
-                .allowedMethods("*")
                 .allowedOrigins("*");
     }
 }
