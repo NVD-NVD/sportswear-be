@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService{
     public User updateAvatar(Principal principal, MultipartFile file) {
         User user = getUserByPrincipal(principal);
         user.setAvatar(cloudinaryService.uploadFile(file));
-        return user;
+        return userRepository.save(user);
     }
 
     @Override
