@@ -17,7 +17,7 @@ public interface ProductService {
 
     List<Product> getAllProduct();
 
-    Page<Product> getProductPaging(String search, int page, int size, String sort, String column);
+    Page<Product> getProductsPaging(String search, int page, int size, String sort, String column);
 
     Product createNewProduct(ProductDto dto, MultipartFile[] images);
 

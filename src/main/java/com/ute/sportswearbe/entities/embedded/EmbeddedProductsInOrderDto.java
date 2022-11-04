@@ -10,9 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmbeddedProductsInOrder {
-    private Product product;
+public class EmbeddedProductsInOrderDto {
+    private String productID;
     private long quantity;
     private EmbeddedOption options;
-    private float total;
 }

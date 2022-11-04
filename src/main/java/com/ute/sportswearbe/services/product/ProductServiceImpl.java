@@ -12,6 +12,7 @@ import com.ute.sportswearbe.services.category.CategoryService;
 import com.ute.sportswearbe.services.cloudinary.CloudinaryService;
 import com.ute.sportswearbe.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,17 +24,12 @@ import java.util.*;
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
+    @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
     private CategoryService categoryService;
-
+    @Autowired
     private CloudinaryService cloudinaryService;
-
-    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService, CloudinaryService cloudinaryService) {
-        this.productRepository = productRepository;
-        this.categoryService = categoryService;
-        this.cloudinaryService = cloudinaryService;
-    }
 
     @Override
     public Product getProductById(String id) {
@@ -58,9 +54,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductPaging(String search, int page, int size, String sort, String column) {
+    public Page<Product> getProductsPaging(String search, int page, int size, String sort, String column) {
         Pageable pageable = PageUtils.createPageable(page, size, sort, column);
-        return productRepository.getProductPaging(search, pageable);
+        return productRepository.getProductsPaging(search, pageable);
     }
 
     @Override

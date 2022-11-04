@@ -28,17 +28,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService{
+    @Autowired
     private UserRepository userRepository;
-
+    @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
     private CloudinaryService cloudinaryService;
-
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.cloudinaryService = cloudinaryService;
-    }
 
     @Override
     public List<User> getAllUser() {
@@ -113,6 +108,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateUser(Principal principal, UserCoreDto dto) {
         User user = getUserByPrincipal(principal);
+        if (user == null){
+            throw new NotFoundException("Không tìm thấy user");
+        }
         user.setUpdateOn(new Date());
         user.setEmail(dto.getEmail());
         user.setPhone(dto.getPhone());
@@ -128,6 +126,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateAvatar(Principal principal, MultipartFile file) {
         User user = getUserByPrincipal(principal);
+        if (user == null){
+            throw new NotFoundException("Không tìm thấy user");
+        }
         user.setAvatar(cloudinaryService.uploadFile(file));
         return userRepository.save(user);
     }
@@ -143,6 +144,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public User changePassword(Principal principal, PasswordDto dto) {
         User user = getUserByPrincipal(principal);
+        if (user == null){
+            throw new NotFoundException("Không tìm thấy user");
+        }
         if (!passwordEncoder.matches(dto.getOldPass(), user.getPassword()))
             throw  new InvalidException("Password không đúng");
         user.setPassword(passwordEncoder.encode(dto.getNewPass()));

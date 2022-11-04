@@ -37,14 +37,14 @@ public class OrderController {
     @ApiOperation(value = "Get list Order có phân trang cho admin", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/paging")
-    public ResponseEntity<Page<Order>> getAllOrder(
+    public ResponseEntity<Page<Order>> getOrdersPaging(
             @RequestParam(name = "search", required = false, defaultValue = "") String search,
             @RequestParam(name = "page", required = false, defaultValue = "${paging.default.page}") int page,
             @RequestParam(name = "size", required = false, defaultValue = "${paging.default.size}") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
             @RequestParam(name = "column", required = false, defaultValue = "orderDate") String column){
         return new ResponseEntity<>(
-                orderService.getOrderPaging(search,page,size,sort,column), HttpStatus.OK);
+                orderService.getOrdersPaging(search,page,size,sort,column), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get list order by userId")
@@ -63,28 +63,21 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrderSuccessByUserId(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get list order by userId và statusId" +
-            "\n(Với statusId là 1 2 3 4 tương đương: \n" +
-            "1 = Chưa xác nhận ;\n" +
-            "2 = Đã xác nhận ;\n" +
-            "3 = Hoàn thành ; \n" +
-            "4 = Hủy)")
-    @PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
-    @GetMapping
-    public ResponseEntity<List<Order>> getOrderByUserIDAndStatus(
-            @RequestParam(value = "userId", required = true) String id,
-            @RequestParam(value = "statusId", required = true) int status,
-            Principal principal){
-        return new ResponseEntity<>(orderService.getListOrderByUserIdWithIf(id, status, principal), HttpStatus.OK);
-    }
+//    @ApiOperation(value = "Get list order by userId ")
+//    @PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
+//    @GetMapping
+//    public ResponseEntity<List<Order>> getAllOrderByUser(
+//            @RequestParam(value = "userId", required = true) String id,
+//            @RequestParam(value = "statusId", required = true) int status,
+//            Principal principal){
+//        return new ResponseEntity<>(orderService.getListOrderByUserIdWithIf(id, status, principal), HttpStatus.OK);
+//    }
 
-    @ApiOperation(value = "User tạo đơn đặt hàng", notes = "Admin")
+    @ApiOperation(value = "User tạo đơn đặt hàng", notes = "Member")
     @PreAuthorize("hasRole('MEMBER')")
-    @PostMapping("/{id}")
-    public ResponseEntity<Order> createNewOrder(
-            @PathVariable(value = "id") String id, Principal principal, @RequestBody OrderDto dto){
-        System.out.println(id);
-        return new ResponseEntity<>(orderService.createNewOrder(id, principal, dto), HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<Order> createNewOrder(Principal principal, @RequestBody OrderDto dto){
+        return new ResponseEntity<>(orderService.createNewOrder(principal, dto), HttpStatus.OK);
     }
 
     @ApiOperation(value = "User hủy đơn hàng(nếu đơn hàng chưa được xử lý)", notes = "Admin")

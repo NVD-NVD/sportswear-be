@@ -21,7 +21,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
             ", {'origin': { $regex: ?0, $options: 'i' }}" +
             ", {'producer': { $regex: ?0, $options: 'i' }} ]}"
             , sort = "{'enable' : -1, 'title' : 1}")
-    Page<Product> getProductPaging(String search, Pageable pageable);
+    Page<Product> getProductsPaging(String search, Pageable pageable);
 
 
 }

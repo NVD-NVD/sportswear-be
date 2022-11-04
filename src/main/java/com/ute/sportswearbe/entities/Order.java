@@ -1,5 +1,7 @@
 package com.ute.sportswearbe.entities;
 
+import com.ute.sportswearbe.entities.embedded.EmbeddedAddress;
+import com.ute.sportswearbe.entities.embedded.EmbeddedPayment;
 import com.ute.sportswearbe.entities.embedded.EmbeddedPrice;
 import com.ute.sportswearbe.entities.embedded.EmbeddedProductsInOrder;
 import lombok.*;
@@ -23,26 +25,28 @@ public class Order {
     @DBRef
     private User user;
 
-    private Date orderDate;
-
-    private List<EmbeddedProductsInOrder> booksInOrder = new ArrayList<>();
+    private List<EmbeddedProductsInOrder> productsInOrder = new ArrayList<>();
 
     @NonNull
-    private EmbeddedPrice subtotal;
+    private EmbeddedPrice total;
 
-    private String address;
+    private EmbeddedAddress address;
 
     private String phone;
 
     private String note;
 
-    private boolean status = true; // trạng thái của order
+    private String processing;
 
-    private boolean pay = false; // trạng thái thanh toán
+//    private boolean status = true; // trạng thái của order
+//
+//    private boolean pay = false; // trạng thái thanh toán
+//
+//    private boolean shipping = false; // trạng thái vận chuyển hàng (chưa giao hàng(false) or đang giao hàng(true))
+//
+//    private boolean delivered = false; // trạng thái hoàn tất việc giao hàng
 
-    private boolean shipping = false; // trạng thái vận chuyển hàng (chưa giao hàng(false) or đang giao hàng(true))
-
-    private boolean delivered = false; // trạng thái hoàn tất việc giao hàng
+    private EmbeddedPayment payment;
 
     private Date createdOn;
 

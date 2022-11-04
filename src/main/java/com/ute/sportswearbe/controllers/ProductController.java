@@ -45,7 +45,7 @@ public class ProductController {
             @RequestParam(name = "size", required = false, defaultValue = "${paging.default.size}") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
             @RequestParam(name = "column", required = false, defaultValue = "id") String column){
-        return new ResponseEntity<>(productService.getProductPaging(search, page, size, sort, column), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getProductsPaging(search, page, size, sort, column), HttpStatus.OK);
     }
     @ApiOperation(value = "Get sản phẩm bằng id")
     @GetMapping("/{id}")

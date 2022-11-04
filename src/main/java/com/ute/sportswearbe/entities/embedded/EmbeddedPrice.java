@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class EmbeddedPrice {
     @ApiModelProperty(notes = "currency", example = "VND", required = true)
-    private String currency = "VND";
+    private String currency = "vnd";
 
     @ApiModelProperty(notes = "discount", example = "250000", required = true)
     private float price;
