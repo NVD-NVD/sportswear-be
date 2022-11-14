@@ -1,4 +1,4 @@
-package com.ute.sportswearbe.config;
+package com.ute.sportswearbe.controllers;
 
 import com.ute.sportswearbe.controllers.ProductController;
 import com.ute.sportswearbe.controllers.UserController;
