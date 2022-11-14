@@ -10,6 +10,7 @@ import com.ute.sportswearbe.exceptions.NotFoundException;
 import com.ute.sportswearbe.repositories.ProductRepository;
 import com.ute.sportswearbe.services.category.CategoryService;
 import com.ute.sportswearbe.services.cloudinary.CloudinaryService;
+import com.ute.sportswearbe.services.file.FilesStorageService;
 import com.ute.sportswearbe.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class ProductServiceImpl implements ProductService {
     private CategoryService categoryService;
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private FilesStorageService storageService;
 
     @Override
     public Product getProductById(String id) {
@@ -89,6 +92,7 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         categoryService.updateCategory(category);
+        product.setImages(storageService.uploadFiles(images, "products", product.getId()));
         return save(product);
     }
 
@@ -239,7 +243,6 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(dto.getQuantity());
         product.setFallIntoCategories(dto.getFallIntoCategories());
         product.setReviews(null);
-        product.setImages(cloudinaryService.uploadListImages(images));
         product.setCreatedOn(new Date());
         product.setUpdateOn(new Date());
 

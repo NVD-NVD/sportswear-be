@@ -46,8 +46,6 @@ public class User {
 
     private EmbeddedAddress address;
 
-
-
     private String avatar;
 
     private List<String> roles = new ArrayList<>();

@@ -7,12 +7,16 @@ import com.ute.sportswearbe.exceptions.InvalidException;
 import com.ute.sportswearbe.exceptions.NotFoundException;
 import com.ute.sportswearbe.repositories.UserRepository;
 import com.ute.sportswearbe.services.cloudinary.CloudinaryService;
+import com.ute.sportswearbe.services.file.FilesStorageService;
 import com.ute.sportswearbe.utils.PageUtils;
 import com.ute.sportswearbe.utils.enums.EnumRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -34,6 +38,8 @@ public class UserServiceImpl implements UserService{
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private FilesStorageService storageService;
 
     @Override
     public List<User> getAllUser() {
@@ -78,6 +84,7 @@ public class UserServiceImpl implements UserService{
         user.setEmail(email);
         user.setName(fullName);
         user.setPassword(password);
+        user.setAvatar("avatar/default.png");
         user.setRoles(Collections.singletonList(EnumRole.ROLE_MEMBER.name()));
         user.setEnable(true);
         userRepository.save(user);
@@ -129,8 +136,18 @@ public class UserServiceImpl implements UserService{
         if (user == null){
             throw new NotFoundException("Không tìm thấy user");
         }
-        user.setAvatar(cloudinaryService.uploadFile(file));
-        return userRepository.save(user);
+        if (file != null) {
+            String fileName = storageService.uploadFile(file, "avatar", user.getId());
+            user.setAvatar(fileName);
+        }
+        return user;
+    }
+
+    @Override
+    public Resource getAvatar(String filename) {
+        String filePath = "avatar/" + filename;
+        Resource resource = storageService.loadFile(filePath);
+        return resource;
     }
 
     @Override
@@ -189,7 +206,7 @@ public class UserServiceImpl implements UserService{
         user.setBirthday(dto.getBirthday());
         user.setGender(dto.getGender());
         user.setAddress(dto.getAddress());
-
+        user.setAvatar("avatar/default.png");
         user.setEnable(true);
         return user;
     }

@@ -97,24 +97,24 @@ public class OrderController {
         return new ResponseEntity<>(orderService.changeStatusOrder(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Admin thay đổi trang thái thanh toán", notes = "Admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/status/{id}")
-    public ResponseEntity<Order> changeStatusPayOfOrder(@PathVariable String id){
-        return new ResponseEntity<>(orderService.changeStatusPayOfOrder(id), HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Admin thay đổi trang thái vẫn chuyển hàng(shipping)", notes = "Admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/shipping/{id}")
-    public ResponseEntity<Order> changeShippingOrder(@PathVariable String id){
-        return new ResponseEntity<>(orderService.changeShippingOrder(id), HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Admin thay đổi trang thái đã giao hàng(delivered)", notes = "Admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/delivered/{id}")
-    public ResponseEntity<Order> changeDeliveredOrder(@PathVariable String id){
-        return new ResponseEntity<>(orderService.changeDeliveredOrder(id), HttpStatus.OK);
-    }
+//    @ApiOperation(value = "Admin thay đổi trang thái thanh toán", notes = "Admin")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PutMapping("/status/{id}")
+//    public ResponseEntity<Order> changeStatusPayOfOrder(@PathVariable String id){
+//        return new ResponseEntity<>(orderService.changeStatusPayOfOrder(id), HttpStatus.OK);
+//    }
+//
+//    @ApiOperation(value = "Admin thay đổi trang thái vẫn chuyển hàng(shipping)", notes = "Admin")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PutMapping("/shipping/{id}")
+//    public ResponseEntity<Order> changeShippingOrder(@PathVariable String id){
+//        return new ResponseEntity<>(orderService.changeShippingOrder(id), HttpStatus.OK);
+//    }
+//
+//    @ApiOperation(value = "Admin thay đổi trang thái đã giao hàng(delivered)", notes = "Admin")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PutMapping("/delivered/{id}")
+//    public ResponseEntity<Order> changeDeliveredOrder(@PathVariable String id){
+//        return new ResponseEntity<>(orderService.changeDeliveredOrder(id), HttpStatus.OK);
+//    }
 }

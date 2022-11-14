@@ -53,30 +53,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Admin tạo mới 1 Product.(Không gữi kèm hình ảnh)", notes = "Admin")
+    @ApiOperation(value = "Admin tạo mới 1 Product")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/noImages")
-    public ResponseEntity<Product> createNewProductNoImage(
-            @RequestBody ProductDto productDto){
-        return new ResponseEntity<>(productService.createNewProduct(productDto, null), HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Admin tạo mới 1 Product.(Có gữi kèm hình ảnh)", notes = "Admin\n Lưu ý: " +
-            "productDto là kiểu String, có cấu trúc JSON theo ProductDto(Giống với API /rest/products/noImages)" )
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/hasImages" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Product> createNewProductHasImages(
-            @RequestParam(name = "productDto", required = true) String productDto,
-            @RequestParam MultipartFile[] files) {
-        ProductDto dto = null;
-        System.out.println(productDto);
-        try {
-            dto = new ObjectMapper().readValue(productDto, ProductDto.class);
-        }catch (Exception e){
-            System.out.println("ObjectMapper error");
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(productService.createNewProduct(dto, files), HttpStatus.OK);
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Product> createNewProduct(
+            @RequestPart(name = "productDto") ProductDto productDto,
+            @RequestPart MultipartFile[] files) {
+        return new ResponseEntity<>(productService.createNewProduct(productDto, files), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Admin thay đổi trạng thái kích hoạt của Product", notes = "Admin")

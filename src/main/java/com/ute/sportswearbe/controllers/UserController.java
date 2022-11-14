@@ -29,28 +29,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation(value = "Get user info by principal", notes = "User")
+    @ApiOperation(value = "Get thông tin User bằng Token", notes = "User")
     @GetMapping
     @PreAuthorize("hasRole('MEMBER')")
     public ResponseEntity<User> getUserByPrincipal(Principal principal){
         return new ResponseEntity<>(userService.getUserByPrincipal(principal), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Admin get user info", notes = "Admin")
+    @ApiOperation(value = "Admin get thông tin User", notes = "Admin")
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserByID(@PathVariable String id){
         return new ResponseEntity<>(userService.getUserByID(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Admin get all users", notes = "Admin")
+    @ApiOperation(value = "Admin get tất cả User (không phân trang)", notes = "Admin")
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUser(){
         return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get user paging", notes = "Admin")
+    @ApiOperation(value = "Get danh sách User có phân trang", notes = "Admin")
     @GetMapping("/paging")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<User>> getUserPaging(
@@ -63,21 +63,21 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserPaging(search, page, size, sort, column), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Create a new User", notes = "Admin")
+    @ApiOperation(value = "Tạo mới một User", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<User> createNewUser(@RequestBody UserCoreDto dto) {
         return new ResponseEntity<>(userService.createNewUser(dto), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Create a new Admin", notes = "Admin")
+    @ApiOperation(value = "Tạo mới một Admin", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/createNewAdmin")
     public ResponseEntity<User> createNewAdmin(@RequestBody UserCoreDto dto) {
         return new ResponseEntity<>(userService.createAdmin(dto), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "User update thông tin", notes = "User")
+    @ApiOperation(value = "User cập nhập thông tin", notes = "User")
     @PreAuthorize("hasRole('MEMBER')")
     @PutMapping("/update/info")
     public ResponseEntity<User> updateUser(
@@ -93,6 +93,12 @@ public class UserController {
         return new ResponseEntity<>(userService.updateAvatar(principal, file), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get avatar")
+    @GetMapping("/avatar/{filename}")
+    public ResponseEntity<?> getAvatar(@PathVariable("filename") String filename){
+        return new ResponseEntity<>(userService.getAvatar(filename), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Admin thay đổi trạng thái kích hoạt tài khoản user", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
@@ -100,7 +106,7 @@ public class UserController {
         return new ResponseEntity<>(userService.changeStatus(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "User change password", notes = "User")
+    @ApiOperation(value = "User thay đổi mật khẩu", notes = "User")
     @PreAuthorize("hasRole('MEMBER')")
     @PutMapping(value = "/password")
     @ResponseBody

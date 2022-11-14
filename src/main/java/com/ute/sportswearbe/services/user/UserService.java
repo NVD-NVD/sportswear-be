@@ -3,6 +3,7 @@ package com.ute.sportswearbe.services.user;
 import com.ute.sportswearbe.dtos.PasswordDto;
 import com.ute.sportswearbe.dtos.user.UserCoreDto;
 import com.ute.sportswearbe.entities.User;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +34,8 @@ public interface UserService {
     User updateUser(Principal principal, UserCoreDto dto);
 
     User updateAvatar(Principal principal, MultipartFile file);
+
+    Resource getAvatar(String filename);
 
     User changeStatus(String id);
 

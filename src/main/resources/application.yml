@@ -3,9 +3,9 @@ spring:
     name: sportswear-be
   data:
     mongodb:
-      uri: mongodb+srv://NVD-NVD:1gVDdiq1RKs2LVh2@cluster0.7hkjpog.mongodb.net/?retryWrites=true&w=majority
-#      host: localhost
-#      port: 27017
+#      uri: mongodb+srv://NVD-NVD:1gVDdiq1RKs2LVh2@cluster0.7hkjpog.mongodb.net/?retryWrites=true&w=majority
+      host: localhost
+      port: 27017
       database: sportswear-database
   servlet:
     multipart:
@@ -27,12 +27,14 @@ jwt:
 default:
   token_type: "Bearer"
   password: 12345678
-  avatar: "https://res.cloudinary.com/dw0tkzfyp/image/upload/v1665110544/uyig6jpaqqzi64hbzzjw.png"
+  avatar: "default.png"
   updatingInfoBook: "Đang cập nhập"
 
+host: "https://sportswear-be.herokuapp.com/rest/"
+
 upload:
-  url: "https://book-store-online-be.herokuapp.com/"
-  part: "/uploads/"
+  url: "https://sportswear-be.herokuapp.com/"
+  path: "/uploads/"
 
 cloudinary:
   cloud_name: dw0tkzfyp
