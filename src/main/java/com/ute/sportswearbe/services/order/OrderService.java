@@ -24,7 +24,7 @@ public interface OrderService {
 
     Order disableOrder(Principal principal, String orderID);
 
-    public Order changeStatusOrder(String id);
+    Order changeStatusOrder(String id);
 
     Order callOffOrder(String userID, String orderID, Principal principal);
 

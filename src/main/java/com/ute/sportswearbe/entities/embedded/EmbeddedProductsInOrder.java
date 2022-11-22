@@ -14,5 +14,7 @@ public class EmbeddedProductsInOrder {
     private Product product;
     private long quantity;
     private EmbeddedOption options;
+    private EmbeddedPrice price;
+    private float discount = 0;
     private float total;
 }

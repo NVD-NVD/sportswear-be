@@ -30,6 +30,11 @@ default:
   avatar: "default.png"
   updatingInfoBook: "Đang cập nhập"
 
+mail:
+  MyConstants:
+    MY_EMAIL: "zerodev247@gmail.com"
+    MY_PASSWORD: "buzylnegzpqswgkk"
+
 host: "https://sportswear-be.herokuapp.com/rest/"
 
 upload:
