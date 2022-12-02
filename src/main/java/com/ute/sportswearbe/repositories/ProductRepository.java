@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends MongoRepository<Product, String> {
 
-    @Query(value = "{'title': {$regex : ?0, $options: 'i'}}: ")
+    @Query(value = "{'title': {$regex : ?0, $options: 'i'}} ")
     Optional<Product> getProductByTitle(String id);
 
 //    List<Product> findAll();

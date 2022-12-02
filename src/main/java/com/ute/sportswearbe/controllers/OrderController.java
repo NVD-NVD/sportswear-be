@@ -63,16 +63,6 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrderSuccessByUserId(id), HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "Get list order by userId ")
-//    @PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
-//    @GetMapping
-//    public ResponseEntity<List<Order>> getAllOrderByUser(
-//            @RequestParam(value = "userId", required = true) String id,
-//            @RequestParam(value = "statusId", required = true) int status,
-//            Principal principal){
-//        return new ResponseEntity<>(orderService.getListOrderByUserIdWithIf(id, status, principal), HttpStatus.OK);
-//    }
-
     @ApiOperation(value = "User tạo đơn đặt hàng", notes = "Member")
     @PreAuthorize("hasRole('MEMBER')")
     @PostMapping
@@ -96,25 +86,4 @@ public class OrderController {
     public ResponseEntity<Order> changeStatusOrder(@PathVariable(value = "id") String id){
         return new ResponseEntity<>(orderService.changeStatusOrder(id), HttpStatus.OK);
     }
-
-//    @ApiOperation(value = "Admin thay đổi trang thái thanh toán", notes = "Admin")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PutMapping("/status/{id}")
-//    public ResponseEntity<Order> changeStatusPayOfOrder(@PathVariable String id){
-//        return new ResponseEntity<>(orderService.changeStatusPayOfOrder(id), HttpStatus.OK);
-//    }
-//
-//    @ApiOperation(value = "Admin thay đổi trang thái vẫn chuyển hàng(shipping)", notes = "Admin")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PutMapping("/shipping/{id}")
-//    public ResponseEntity<Order> changeShippingOrder(@PathVariable String id){
-//        return new ResponseEntity<>(orderService.changeShippingOrder(id), HttpStatus.OK);
-//    }
-//
-//    @ApiOperation(value = "Admin thay đổi trang thái đã giao hàng(delivered)", notes = "Admin")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PutMapping("/delivered/{id}")
-//    public ResponseEntity<Order> changeDeliveredOrder(@PathVariable String id){
-//        return new ResponseEntity<>(orderService.changeDeliveredOrder(id), HttpStatus.OK);
-//    }
 }

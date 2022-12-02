@@ -2,7 +2,6 @@ package com.ute.sportswearbe.services.product;
 
 import com.ute.sportswearbe.dtos.ProductDto;
 import com.ute.sportswearbe.entities.Category;
-import com.ute.sportswearbe.entities.FilesDeleted;
 import com.ute.sportswearbe.entities.Product;
 import com.ute.sportswearbe.entities.embedded.EmbeddedCategory;
 import com.ute.sportswearbe.exceptions.InvalidException;
@@ -198,12 +197,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product deleteImagesProduct(String id, List<String> images) {
         Product product = getProductById(id);
-
-        FilesDeleted filesDeleted = new FilesDeleted();
-        filesDeleted.setUId(id);
-        filesDeleted.setTitle("product");
-        filesDeleted.setLinks(images);
-
         List<String> pImages = product.getImages();
         for (int i = 0; i < images.size(); i++) {
             String image = images.get(i);

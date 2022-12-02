@@ -18,6 +18,8 @@ public class Payment {
     @Id
     private String id;
 
+    private String gateway;
+
     private Date createdOn;
 
     private Date updateOn;
