@@ -12,6 +12,7 @@ import com.ute.sportswearbe.utils.PageUtils;
 import com.ute.sportswearbe.utils.enums.EnumRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService{
+    @Value("${host}")
+    private String host;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -84,7 +87,7 @@ public class UserServiceImpl implements UserService{
         user.setEmail(email);
         user.setName(fullName);
         user.setPassword(password);
-        user.setAvatar("avatar/default.png");
+        user.setAvatar(host + "/rest/image/avatar/default.png");
         user.setRoles(Collections.singletonList(EnumRole.ROLE_MEMBER.name()));
         user.setEnable(true);
         userRepository.save(user);
@@ -136,10 +139,8 @@ public class UserServiceImpl implements UserService{
         if (user == null){
             throw new NotFoundException("Không tìm thấy user");
         }
-        if (file != null) {
-            String fileName = storageService.uploadFile(file, "avatar", user.getId());
-            user.setAvatar(fileName);
-        }
+        String fileName = storageService.uploadFile(file, "avatar", user.getId());
+        user.setAvatar(host+"/rest/image/"+fileName);
         return user;
     }
 
@@ -211,7 +212,7 @@ public class UserServiceImpl implements UserService{
         user.setBirthday(dto.getBirthday());
         user.setGender(dto.getGender());
         user.setAddress(dto.getAddress());
-        user.setAvatar("avatar/default.png");
+        user.setAvatar(host + "/rest/image/avatar/default.png");
         user.setEnable(true);
         return user;
     }
