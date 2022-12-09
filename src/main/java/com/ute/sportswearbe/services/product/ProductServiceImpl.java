@@ -13,6 +13,8 @@ import com.ute.sportswearbe.services.file.FilesStorageService;
 import com.ute.sportswearbe.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,13 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
+    @Value("${host}")
+    private String host;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -91,7 +96,9 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         categoryService.updateCategory(category);
-        product.setImages(storageService.uploadFiles(images, "products", product.getId()));
+        List<String> _img = storageService.uploadFiles(images, "products", product.getId())
+                        .stream().map(e -> {return host + "/rest/image/" +e;}).collect(Collectors.toList());
+        product.setImages(_img);
         return save(product);
     }
 
@@ -138,8 +145,11 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if (images.length > 0) {
-            list.addAll(cloudinaryService.uploadListImages(images));
-            product.setImages(cloudinaryService.uploadListImages(images));
+//            list.addAll(cloudinaryService.uploadListImages(images));
+//            product.setImages(cloudinaryService.uploadListImages(images));
+            List<String> _img = storageService.uploadFiles(images, "products", product.getId())
+                    .stream().map(e -> {return host + "/rest/image/" +e;}).collect(Collectors.toList());
+            product.setImages(_img);
         }
         product.setCreatedOn(dto.getCreatedOn());
         product.setUpdateOn(new Date());
@@ -187,10 +197,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Resource getImage(String filename) {
+        String filePath = "products/" + filename;
+        Resource resource = storageService.loadFile(filePath);
+        return resource;
+    }
+
+    @Override
     public Product addImagesProduct(String id, MultipartFile[] images) {
         Product product = getProductById(id);
         List<String> listImages = product.getImages();
-        listImages.addAll(cloudinaryService.uploadListImages(images));
+        listImages.addAll(storageService.uploadFiles(images, "products", product.getId())
+                .stream().map(e -> {return host + "/rest/image/" +e;}).collect(Collectors.toList()));
+        product.setImages(listImages);
         return save(product);
     }
 

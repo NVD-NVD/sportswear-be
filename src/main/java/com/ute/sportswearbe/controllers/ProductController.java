@@ -77,7 +77,6 @@ public class ProductController {
             @RequestParam(name = "files") MultipartFile[] files){
         return new ResponseEntity<>(productService.updateProduct(id, dto, files), HttpStatus.OK);
     }
-
     @ApiOperation(value = "Admin thêm hình ảnh cho Product", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/images/{id}")

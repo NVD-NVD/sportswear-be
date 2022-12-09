@@ -93,11 +93,11 @@ public class UserController {
         return new ResponseEntity<>(userService.updateAvatar(principal, file), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get avatar")
-    @GetMapping("/avatar/{filename}")
-    public ResponseEntity<?> getAvatar(@PathVariable("filename") String filename){
-        return new ResponseEntity<>(userService.getAvatar(filename), HttpStatus.OK);
-    }
+//    @ApiOperation(value = "Get avatar")
+//    @GetMapping("/avatar/{filename}")
+//    public ResponseEntity<?> getAvatar(@PathVariable("filename") String filename){
+//        return new ResponseEntity<>(userService.getAvatar(filename), HttpStatus.OK);
+//    }
 
     @ApiOperation(value = "Admin thay đổi trạng thái kích hoạt tài khoản user", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")

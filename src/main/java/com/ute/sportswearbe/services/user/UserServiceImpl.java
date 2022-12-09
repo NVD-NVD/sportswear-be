@@ -171,6 +171,11 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
     //    @Override
 //    public User changePassword(String id, Principal principal, PasswordDto dto) {
 //        return null;

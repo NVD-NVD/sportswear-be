@@ -41,5 +41,7 @@ public interface UserService {
 
     User changePassword(Principal principal, PasswordDto dto);
 
+    User save(User user);
+
 //    User forgotPassword();
 }
