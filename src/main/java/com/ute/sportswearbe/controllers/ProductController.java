@@ -55,7 +55,8 @@ public class ProductController {
 
     @ApiOperation(value = "Admin tạo mới 1 Product")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+                            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Product> createNewProduct(
             @RequestPart(name = "productDto") ProductDto productDto,
             @RequestPart MultipartFile[] files) {
@@ -71,10 +72,12 @@ public class ProductController {
 
     @ApiOperation(value = "Admin cập nhập thông tin Product", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+                            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Product> updateProduct(
-            @PathVariable String id, @RequestBody Product dto,
-            @RequestParam(name = "files") MultipartFile[] files){
+            @PathVariable String id,
+            @RequestPart(name = "dto") Product dto,
+            @RequestPart(name = "files") MultipartFile[] files){
         return new ResponseEntity<>(productService.updateProduct(id, dto, files), HttpStatus.OK);
     }
     @ApiOperation(value = "Admin thêm hình ảnh cho Product", notes = "Admin")

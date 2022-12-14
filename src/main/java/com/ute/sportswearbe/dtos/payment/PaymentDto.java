@@ -10,5 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PaymentDto {
     private String gateway;
+    private String orderId;
+    private int amount;
+    private String description;
+    private String bankCode;
     private String total;
 }
