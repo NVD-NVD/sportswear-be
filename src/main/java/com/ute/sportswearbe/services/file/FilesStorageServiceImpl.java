@@ -50,7 +50,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     public List<String> uploadFiles(MultipartFile[] files, String directory, String id) {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < files.length; i++) {
-            list.add(i, uploadFile(files[i], directory, id+"_i"));
+            list.add(i, uploadFile(files[i], directory, id+"_"+i));
         }
         return list;
     }

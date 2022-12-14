@@ -113,8 +113,8 @@ public class ProductServiceImpl implements ProductService {
             throw new InvalidException("Quantity không được null");
         if (ObjectUtils.isEmpty(dto.getPrice()))
             throw new InvalidException("Prices không được null");
-        if (ObjectUtils.isEmpty(images))
-            throw new InvalidException("Phải có ít nhất một ảnh");
+//        if (ObjectUtils.isEmpty(images))
+//            throw new InvalidException("Phải có ít nhất một ảnh");
 
         product.setTitle(dto.getTitle());
         product.setDescriptions(dto.getDescriptions());
@@ -129,27 +129,15 @@ public class ProductServiceImpl implements ProductService {
         product.setFallIntoCategories(dto.getFallIntoCategories());
         product.setReviews(dto.getReviews());
 
-        Iterator<String> iterator = product.getImages().iterator();
-        List<String> list = dto.getImages();
-        while (iterator.hasNext()) {
-            String img = iterator.next();
-            boolean flag = false;
-            for (int i = 0; i < list.size(); i++) {
-                if (img.equals(list.get(i))) {
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag)
-                iterator.remove();
-        }
-
-        if (images.length > 0) {
+        product.setImages(dto.getImages());
+        if (!ObjectUtils.isEmpty(images)) {
 //            list.addAll(cloudinaryService.uploadListImages(images));
 //            product.setImages(cloudinaryService.uploadListImages(images));
             List<String> _img = storageService.uploadFiles(images, "products", product.getId())
                     .stream().map(e -> {return host + "/rest/image/" +e;}).collect(Collectors.toList());
-            product.setImages(_img);
+            List<String> imgs = product.getImages();
+            imgs.addAll(_img);
+            product.setImages(imgs);
         }
         product.setCreatedOn(dto.getCreatedOn());
         product.setUpdateOn(new Date());

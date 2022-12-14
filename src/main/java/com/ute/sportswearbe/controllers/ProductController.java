@@ -77,7 +77,7 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(
             @PathVariable String id,
             @RequestPart(name = "dto") Product dto,
-            @RequestPart(name = "files") MultipartFile[] files){
+            @RequestPart(name = "files", required = false) MultipartFile[] files){
         return new ResponseEntity<>(productService.updateProduct(id, dto, files), HttpStatus.OK);
     }
     @ApiOperation(value = "Admin thêm hình ảnh cho Product", notes = "Admin")
