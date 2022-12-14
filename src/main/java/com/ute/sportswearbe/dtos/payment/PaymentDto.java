@@ -1,4 +1,4 @@
-package com.ute.sportswearbe.dtos;
+package com.ute.sportswearbe.dtos.payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

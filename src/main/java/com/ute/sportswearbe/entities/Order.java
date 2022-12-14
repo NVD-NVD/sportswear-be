@@ -38,14 +38,6 @@ public class Order {
 
     private String processing;
 
-//    private boolean status = true; // trạng thái của order
-//
-//    private boolean pay = false; // trạng thái thanh toán
-//
-//    private boolean shipping = false; // trạng thái vận chuyển hàng (chưa giao hàng(false) or đang giao hàng(true))
-//
-//    private boolean delivered = false; // trạng thái hoàn tất việc giao hàng
-
     private EmbeddedPayment payment;
 
     private Date createdOn;

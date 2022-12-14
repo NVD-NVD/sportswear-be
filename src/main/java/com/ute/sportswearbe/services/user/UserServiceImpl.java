@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService{
         if (user == null){
             throw new NotFoundException("Không tìm thấy user");
         }
-        
+
         String fileName = storageService.uploadFile(file, "avatar", user.getId());
         user.setAvatar(host+"/rest/image/"+fileName);
         return user;
