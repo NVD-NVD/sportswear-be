@@ -21,12 +21,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @ApiOperation(value = "test")
-    @GetMapping("/test")
-    public ResponseEntity<String> testOrder(){
-        return new ResponseEntity<>("test order", HttpStatus.OK);
-    }
-
     @ApiOperation(value = "Get tất cả Order không phân trang cho admin", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")

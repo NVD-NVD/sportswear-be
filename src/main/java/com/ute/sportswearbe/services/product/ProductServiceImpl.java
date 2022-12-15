@@ -4,6 +4,7 @@ import com.ute.sportswearbe.dtos.ProductDto;
 import com.ute.sportswearbe.entities.Category;
 import com.ute.sportswearbe.entities.Product;
 import com.ute.sportswearbe.entities.embedded.EmbeddedCategory;
+import com.ute.sportswearbe.entities.embedded.EmbeddedOption;
 import com.ute.sportswearbe.exceptions.InvalidException;
 import com.ute.sportswearbe.exceptions.NotFoundException;
 import com.ute.sportswearbe.repositories.ProductRepository;
@@ -11,6 +12,7 @@ import com.ute.sportswearbe.services.category.CategoryService;
 import com.ute.sportswearbe.services.cloudinary.CloudinaryService;
 import com.ute.sportswearbe.services.file.FilesStorageService;
 import com.ute.sportswearbe.utils.PageUtils;
+import com.ute.sportswearbe.utils.enums.EnumSize;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -234,6 +236,25 @@ public class ProductServiceImpl implements ProductService {
         product.setTitle(dto.getTitle());
         product.setDescriptions(dto.getDescriptions());
 
+//        product.setOptions(dto.getOptions());
+//        List<String> s = new ArrayList<>();
+//        if (!dto.getOptions().getSizes().isEmpty()){
+//            dto.getOptions().getSizes().forEach(e->{
+//                if (e.toLowerCase().equals(EnumSize.M.name().toLowerCase()))
+//                    s.add(e);
+//                if (e.toLowerCase().equals(EnumSize.M.name().toLowerCase()))
+//                    s.add(e);
+//                if (e.toLowerCase().equals(EnumSize.L.name().toLowerCase()))
+//                    s.add(e);
+//                if (e.toLowerCase().equals(EnumSize.XL.name().toLowerCase()))
+//                    s.add(e);
+//                if (e.toLowerCase().equals(EnumSize.XXL.name().toLowerCase()))
+//                    s.add(e);
+//            });
+//            EmbeddedOption option = dto.getOptions();
+//            option.setSizes(s);
+//            dto.setOptions(option);
+//        }
         product.setOptions(dto.getOptions());
         product.setTypes(dto.getTypes());
         product.setTrademark(dto.getTrademark());

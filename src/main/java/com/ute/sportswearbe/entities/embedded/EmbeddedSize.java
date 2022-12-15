@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EmbeddedSize {
     @ApiModelProperty(notes = "size", example = "M", required = true)
-    private EnumSize size;
+    private String size;
     @ApiModelProperty(notes = "quantity",example = "100", required = true)
     private int quantity;
 }

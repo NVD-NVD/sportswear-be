@@ -11,6 +11,17 @@ import org.springframework.stereotype.Service;
 public class TransactionServiceImpl implements TransactionService{
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Override
+    public Transaction getTransactionByID(String id) {
+        return transactionRepository.getTransactionById(id);
+    }
+
+    @Override
+    public Transaction getTransactionByOrderID(String orderID) {
+        return transactionRepository.getTransactionByOrderId(orderID);
+    }
+
     @Override
     public Transaction createTransaction(Transaction transaction) {
         return null;

@@ -4,12 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+
+import java.util.Date;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmbeddedPayment {
-    @Id
-    private String id;
+    private String transactionID;
+    private String paymentID;
+    private String processing;
+    private Date createDate;
+    private Date updateDate;
+
 }

@@ -5,6 +5,8 @@ import com.ute.sportswearbe.entities.Transaction;
 import java.security.Principal;
 
 public interface TransactionService {
+    Transaction getTransactionByID(String id);
+    Transaction getTransactionByOrderID(String orderID);
     Transaction createTransaction(Transaction transaction);
     Transaction createTransaction(String amount, String bankCode, String bankTranNo, String cardType,
                       String orderInfo, String payDate, String responseCode, String tmnCode,

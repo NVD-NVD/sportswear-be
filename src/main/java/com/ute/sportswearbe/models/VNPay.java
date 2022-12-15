@@ -30,7 +30,7 @@ public class VNPay {
     public static String vnp_OrderType = "150000"; // Mã danh mục hàng hóa. Mỗi hàng hóa sẽ thuộc một nhóm danh mục do VNPAY quy định. (Tùy chọn)
     public static String vnp_TxnRef; // Mã tham chiếu của giao dịch tại hệ thống của merchant.
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "https://sportswear-be.herokuapp.com/rest/paymnet/thong-tin-thanh-toan";
+    public static String vnp_ReturnUrl = "https://sportswear-be.herokuapp.com/rest/payments/success-payment";
     public static String vnp_HashSecret = "TUEFVBPBLRSSDGUZVDHKDCDDJTXJSIOY";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
     public static String vnp_SecureHash; // Mã kiểm tra (checksum) để đảm bảo dữ liệu của giao dịch không bị thay đổi trong quá trình chuyển từ merchant sang VNPAY.

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 public interface PaymentService {
-    PaymentResp createPayment(String orderID, String url_return, Principal principal) throws IOException;
+    PaymentResp createPayment(String orderID, String url, Principal principal) throws IOException;
     TransactionStatusDto transactionHandle (
             String amount, String bankCode, String bankTranNo,
             String cardType, String orderInfo, String payDate,
