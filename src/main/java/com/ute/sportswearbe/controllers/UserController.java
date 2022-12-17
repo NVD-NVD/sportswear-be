@@ -115,4 +115,12 @@ public class UserController {
             @RequestBody PasswordDto dto){
         return new ResponseEntity<>(userService.changePassword(principal, dto) , HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Admin edit thông tin các tài khoản")
+    @PutMapping("/admin/update")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateOrderAccount(@RequestParam(value = "userID") String id,
+                                                @RequestParam(value = "dto") User user){
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }

@@ -73,11 +73,15 @@ public class ProductServiceImpl implements ProductService {
         Product product = convertDtoToProduct(dto, images);
         product = productRepository.save(product);
         List<EmbeddedCategory> embeddedCategoryList = dto.getFallIntoCategories();
+        List<EmbeddedCategory> em = new ArrayList<>();
         Category category = new Category();
+        boolean flag = false;
         for (int i = 0; i < embeddedCategoryList.size(); i++) {
             EmbeddedCategory e = embeddedCategoryList.get(i);
             if (e.getId().isEmpty() && !e.getTitle().isEmpty()) {
+                System.out.println("cate Id null");
                 if (categoryService.getCategoryByTitle(e.getTitle()) == null) {
+                    System.out.println("Get cate title == null");
                     Category cate = new Category();
                     cate.setTitle(e.getTitle());
                     cate.setCreatedOn(new Date());
@@ -85,8 +89,11 @@ public class ProductServiceImpl implements ProductService {
                     cate.setEnable(true);
 //                        new Category(null, e.getTitle(), null, new Date(), new Date(), true)
                     category = categoryService.save(new Category(null, e.getTitle(), null, new Date(), new Date(), true));
+                    em.add(new EmbeddedCategory(category.getId(), category.getTitle()));
                 } else {
+                    System.out.println("Get cate Title != null");
                     category = categoryService.getCategoryByTitle(e.getTitle());
+                    em.add(new EmbeddedCategory(category.getId(), category.getTitle()));
                 }
                 e.setId(category.getId());
                 category = categoryService.getCategoryById(e.getId());
@@ -94,9 +101,29 @@ public class ProductServiceImpl implements ProductService {
                 products.addAll(category.getProductsOfCategory());
                 products.add(product);
                 category.setProductsOfCategory(products);
-
+            }
+            else if (!e.getId().isEmpty()){
+                System.out.println("cate Id != null : " + e.getId());
+                category = categoryService.getCategoryById(e.getId());
+                e.setId(category.getId());
+                List<Product> products = new ArrayList<>();
+                products.addAll(category.getProductsOfCategory());
+                products.add(product);
+                category.setProductsOfCategory(products);
+                em.add(new EmbeddedCategory(category.getId(), category.getTitle()));
             }
         }
+
+        for (int i = 0; i < em.size()-1; i++) {
+            EmbeddedCategory e = em.get(i);
+            for (int j = i+1; j < em.size(); j++) {
+                EmbeddedCategory ee = em.get(j);
+                if (e.getId().toString().equals(ee.getId().toString())){
+                    em.remove(j);
+                }
+            }
+        }
+        product.setFallIntoCategories(em);
         categoryService.updateCategory(category);
         List<String> _img = storageService.uploadFiles(images, "products", product.getId())
                         .stream().map(e -> {return host + "/rest/image/" +e;}).collect(Collectors.toList());
@@ -262,7 +289,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(dto.getPrice());
         product.setDiscount(dto.getDiscount());
         product.setQuantity(dto.getQuantity());
-        product.setFallIntoCategories(dto.getFallIntoCategories());
+//        product.setFallIntoCategories(dto.getFallIntoCategories());
         product.setReviews(null);
         product.setCreatedOn(new Date());
         product.setUpdateOn(new Date());

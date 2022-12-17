@@ -22,13 +22,13 @@ public class CategoryController {
 
     @ApiOperation(value = "Get all category")
     @GetMapping("/all")
-    public ResponseEntity<List<Category>> getAllCategory(){
+    public ResponseEntity<?> getAllCategory(){
         return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get list name Category")
     @GetMapping
-    public ResponseEntity<List<String>> getListNameCategory(){
+    public ResponseEntity<?> getListNameCategory(){
         return new ResponseEntity<>(categoryService.getListNameCategory(), HttpStatus.OK);
     }
 
