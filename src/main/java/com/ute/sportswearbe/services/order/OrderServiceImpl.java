@@ -42,6 +42,16 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    public List<Order> getAllOrderByPrincipal(Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        if (user == null){
+            throw new NotFoundException("Không tìm thấy user");
+        }
+        List<Order> orders = getOrderByUserId(user.getId());
+        return orders;
+    }
+
+    @Override
     public Page<Order> getOrdersPaging(String search, int page, int size, String sort, String column) {
         Pageable pageable = PageUtils.createPageable(page, size, sort, column);
         return orderRepository.getOrdersPaging(search, pageable);

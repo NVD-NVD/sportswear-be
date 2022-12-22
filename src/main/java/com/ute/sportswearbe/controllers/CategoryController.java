@@ -26,11 +26,11 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get list name Category")
-    @GetMapping
-    public ResponseEntity<?> getListNameCategory(){
-        return new ResponseEntity<>(categoryService.getListNameCategory(), HttpStatus.OK);
-    }
+//    @ApiOperation(value = "Get list name Category")
+//    @GetMapping
+//    public ResponseEntity<?> getListNameCategory(){
+//        return new ResponseEntity<>(categoryService.getListNameCategory(), HttpStatus.OK);
+//    }
 
     @ApiOperation(value = "Get Category by id")
     @GetMapping("/{id}")

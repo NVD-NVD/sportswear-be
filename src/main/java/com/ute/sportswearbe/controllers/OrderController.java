@@ -2,7 +2,10 @@ package com.ute.sportswearbe.controllers;
 
 import com.ute.sportswearbe.dtos.OrderDto;
 import com.ute.sportswearbe.entities.Order;
+import com.ute.sportswearbe.entities.User;
+import com.ute.sportswearbe.exceptions.NotFoundException;
 import com.ute.sportswearbe.services.order.OrderService;
+import com.ute.sportswearbe.services.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
@@ -20,6 +23,23 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private UserService userService;
+
+    @ApiOperation(value = "Get tất cả Order của User bàng token", notes = "User")
+    @PreAuthorize("hasRole('MEMBER')")
+    @GetMapping()
+    public ResponseEntity<?> getAllOrderByPrincipal(Principal principal){
+        return new ResponseEntity<>(orderService.getAllOrderByPrincipal(principal), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get tất cả Order của User", notes = "Admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/user/")
+    public ResponseEntity<?> getOrderOfUser(@PathVariable String id){
+        return new ResponseEntity<>(orderService.getOrderByUserId(id), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Get tất cả Order không phân trang cho admin", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
@@ -41,12 +61,12 @@ public class OrderController {
                 orderService.getOrdersPaging(search,page,size,sort,column), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get list order by userId")
+    @ApiOperation(value = "Get list order by order ID")
     @PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
     @GetMapping("/{id}")
-    public ResponseEntity<List<Order>> getOrderByUserID(
+    public ResponseEntity<?> getOrderByOrderID(
             @PathVariable(value = "id") String id){
-        return new ResponseEntity<>(orderService.getOrderByUserId(id), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get list order success by userId")
@@ -64,19 +84,22 @@ public class OrderController {
         return new ResponseEntity<>(orderService.createNewOrder(principal, dto), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "User hủy đơn hàng(nếu đơn hàng chưa được xử lý)", notes = "Admin")
+    @ApiOperation(value = "User hủy đơn hàng(nếu đơn hàng chưa được xử lý)", notes = "User")
     @PreAuthorize("hasRole('MEMBER')")
-    @DeleteMapping("/{userID}/{orderID}")
+    @DeleteMapping("/{orderID}")
     public ResponseEntity<Order> callOffOrder(
-            @PathVariable(value = "userID") String userID,
             @PathVariable(value = "orderID") String orderID,
             Principal principal){
-        return new ResponseEntity<>(orderService.callOffOrder(userID, orderID, principal), HttpStatus.OK);
+        User user = userService.getUserByPrincipal(principal);
+        if (user == null){
+            throw new NotFoundException("Không tìm thấy user");
+        }
+        return new ResponseEntity<>(orderService.callOffOrder(user.getId(), orderID, principal), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Admin thay đổi trang thái đơn hàng", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Order> changeStatusOrder(@PathVariable(value = "id") String id){
         return new ResponseEntity<>(orderService.changeStatusOrder(id), HttpStatus.OK);
     }

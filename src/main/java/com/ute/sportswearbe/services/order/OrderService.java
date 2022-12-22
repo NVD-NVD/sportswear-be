@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface OrderService {
     List<Order> getAllOrder();
+    List<Order> getAllOrderByPrincipal(Principal principal);
 
     Page<Order> getOrdersPaging(String search, int page, int size, String sort, String column);
 

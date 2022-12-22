@@ -15,12 +15,12 @@ public interface CategoryRepository extends MongoRepository<Category, String> {
 //
     List<Category> findAll();
 
-    @Query(value = "{'title' : { $regex: ?0, $options: 'i' }")
+    @Query(value = "{'title' : { '$regex': ?0, '$options': 'i' }}")
     Optional<Category> getCategoryByTitle(String title);
 
     Category findCategoryByTitle(String title);
 
-    @Query(value = "{'title' : { $regex: ?0, $options: 'i' }"
+    @Query(value = "{'title' : { '$regex': ?0, '$options': 'i' }}"
             , sort = "{'enable' : -1, 'title' : 1}")
     Page<Category> getCategoryPaging(String search, Pageable pageable);
 //
