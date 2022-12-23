@@ -69,7 +69,7 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get list order success by userId")
+    @ApiOperation(value = "Get list order success by userId", notes="Admin")
     @PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
     @GetMapping("/success/{id}")
     public ResponseEntity<List<Order>> getOrderSuccessByUserID(
@@ -77,7 +77,7 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrderSuccessByUserId(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "User tạo đơn đặt hàng", notes = "Member")
+    @ApiOperation(value = "User tạo đơn đặt hàng", notes = "User")
     @PreAuthorize("hasRole('MEMBER')")
     @PostMapping
     public ResponseEntity<Order> createNewOrder(Principal principal, @RequestBody OrderDto dto){

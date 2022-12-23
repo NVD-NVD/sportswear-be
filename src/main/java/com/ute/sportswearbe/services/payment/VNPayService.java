@@ -66,13 +66,13 @@ public class VNPayService implements PaymentService{
         vnp_Params.put("vnp_ReturnUrl", VNPay.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", VNPay.vnp_IpAddr);
         //vnp_Params.put("vnp_SecureHash", VNPay.vnp_HashSecret);
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"));
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
 
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-        cld.add(Calendar.MINUTE, 15);
+        cld.add(Calendar.MINUTE, 45);
         String vnp_ExpireDate = formatter.format(cld.getTime());
         //Add Params of 2.1.0 Version
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
