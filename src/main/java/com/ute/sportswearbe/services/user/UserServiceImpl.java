@@ -143,12 +143,14 @@ public class UserServiceImpl implements UserService {
         if (!name.isEmpty() || name != null) {
             user.setName(name);
         }
-        if (birthday.compareTo(new Date(1997, 01, 01)) != 0) {
-            try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String birthday_n = simpleDateFormat.format(birthday);
+        try {
+            birthday = simpleDateFormat.parse(birthday_n);
+            Date date_compare = simpleDateFormat.parse("01-01-1900");
+            if (birthday.compareTo(date_compare) != 0) {
                 Date birthday_current = user.getBirthday();
-                System.out.println("Birthdat current: " + birthday_current.getDay() +'-'+ birthday_current.getMonth()+"-" +birthday_current.getYear());
-                DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyy");
                 String birthday_current_str = simpleDateFormat.format(user.getBirthday());
                 birthday_current = simpleDateFormat.parse(birthday_current_str);
                 Date birthday_new = simpleDateFormat.parse(birthday.getDate() + "-" + birthday.getMonth() + "-" + birthday.getYear());
@@ -158,10 +160,11 @@ public class UserServiceImpl implements UserService {
                 if (!gender.isEmpty() || gender != null) {
                     user.setGender(gender);
                 }
-            } catch (ParseException ex) {
-                System.out.println("User update info: Can't convert date birthday");
             }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
         }
+
         EmbeddedAddress address = new EmbeddedAddress();
         EmbeddedAddress add_old = user.getAddress();
         if (!number.isEmpty() || number != null) {
