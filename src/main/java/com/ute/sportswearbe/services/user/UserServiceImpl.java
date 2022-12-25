@@ -3,6 +3,7 @@ package com.ute.sportswearbe.services.user;
 import com.ute.sportswearbe.dtos.PasswordDto;
 import com.ute.sportswearbe.dtos.user.UserCoreDto;
 import com.ute.sportswearbe.entities.User;
+import com.ute.sportswearbe.entities.embedded.EmbeddedAddress;
 import com.ute.sportswearbe.exceptions.InvalidException;
 import com.ute.sportswearbe.exceptions.NotFoundException;
 import com.ute.sportswearbe.repositories.UserRepository;
@@ -24,6 +25,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -32,7 +36,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Value("${host}")
     private String host;
     @Autowired
@@ -118,7 +122,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateUser(Principal principal, UserCoreDto dto) {
         User user = getUserByPrincipal(principal);
-        if (user == null){
+        if (user == null) {
             throw new NotFoundException("Không tìm thấy user");
         }
         user.setUpdateOn(new Date());
@@ -134,14 +138,83 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User updateUserInfo(String id, String name, Date birthday, String gender, String number, String street, String ward, String district, String city, String country) {
+        User user = getUserByID(id);
+        if (!name.isEmpty() || name != null) {
+            user.setName(name);
+        }
+        if (birthday.compareTo(new Date(1997, 01, 01)) != 0) {
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                Date birthday_current = user.getBirthday();
+                System.out.println("Birthdat current: " + birthday_current.getDay() +'-'+ birthday_current.getMonth()+"-" +birthday_current.getYear());
+                DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyy");
+                String birthday_current_str = simpleDateFormat.format(user.getBirthday());
+                birthday_current = simpleDateFormat.parse(birthday_current_str);
+                Date birthday_new = simpleDateFormat.parse(birthday.getDate() + "-" + birthday.getMonth() + "-" + birthday.getYear());
+                if (birthday_current.compareTo(birthday_new) != 0) {
+                    user.setBirthday(birthday);
+                }
+                if (!gender.isEmpty() || gender != null) {
+                    user.setGender(gender);
+                }
+            } catch (ParseException ex) {
+                System.out.println("User update info: Can't convert date birthday");
+            }
+        }
+        EmbeddedAddress address = new EmbeddedAddress();
+        EmbeddedAddress add_old = user.getAddress();
+        if (!number.isEmpty() || number != null) {
+            address.setNumber(number);
+        } else {
+            address.setNumber(add_old.getNumber());
+        }
+
+        if (!street.isEmpty() || street != null) {
+            address.setStreet(street);
+        } else {
+            address.setStreet(add_old.getStreet());
+        }
+
+        if (!ward.isEmpty() || ward != null) {
+            address.setWard(ward);
+        } else {
+            address.setWard(add_old.getWard());
+        }
+
+        if (!district.isEmpty() || district != null) {
+            address.setDistrict(district);
+        } else {
+            address.setDistrict(add_old.getDistrict());
+        }
+
+        if (!city.isEmpty() || city != null) {
+            address.setCity(city);
+        } else {
+            address.setCity(add_old.getCity());
+        }
+
+        if (!country.isEmpty() || country != null) {
+            address.setCountry(country);
+        } else {
+            address.setCountry(add_old.getCountry());
+        }
+        user.setAddress(address);
+        user.setUpdateOn(new Date());
+
+//        return user;
+        return userRepository.save(user);
+    }
+
+    @Override
     public User updateAvatar(Principal principal, MultipartFile file) {
         User user = getUserByPrincipal(principal);
-        if (user == null){
+        if (user == null) {
             throw new NotFoundException("Không tìm thấy user");
         }
 
         String fileName = storageService.uploadFile(file, "avatar", user.getId());
-        user.setAvatar(host+"/rest/image/"+fileName);
+        user.setAvatar(host + "/rest/image/" + fileName);
         return user;
     }
 
@@ -163,14 +236,22 @@ public class UserServiceImpl implements UserService{
     @Override
     public User changePassword(Principal principal, PasswordDto dto) {
         User user = getUserByPrincipal(principal);
-        if (user == null){
+        if (user == null) {
             throw new NotFoundException("Không tìm thấy user");
         }
         if (!passwordEncoder.matches(dto.getOldPass(), user.getPassword()))
-            throw  new InvalidException("Password không đúng");
+            throw new InvalidException("Password không đúng");
         user.setPassword(passwordEncoder.encode(dto.getNewPass()));
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public User changeEmail(String id, String email) {
+        User user = getUserByID(id);
+
+
+        return null;
     }
 
     @Override
@@ -200,7 +281,7 @@ public class UserServiceImpl implements UserService{
         }
 
         User userCoreByPhone = getUserCoreByPhone(dto.getPhone());
-        if (!ObjectUtils.isEmpty(userCoreByPhone)){
+        if (!ObjectUtils.isEmpty(userCoreByPhone)) {
             throw new InvalidException(String.format("Phone %s đã được sử dụng", dto.getPhone()));
         }
 

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 public interface UserService {
@@ -33,6 +34,8 @@ public interface UserService {
 
     User updateUser(Principal principal, UserCoreDto dto);
 
+    User updateUserInfo(String id, String name, Date birthday, String gender, String number, String street, String ward, String district, String city, String country);
+
     User updateAvatar(Principal principal, MultipartFile file);
 
     Resource getAvatar(String filename);
@@ -41,6 +44,7 @@ public interface UserService {
 
     User changePassword(Principal principal, PasswordDto dto);
 
+    User changeEmail(String id, String email);
     User save(User user);
 
 //    User forgotPassword();
