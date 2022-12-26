@@ -70,7 +70,7 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
 
-        response.sendRedirect("http://localhost:8080");
+        response.sendRedirect("http://localhost:3000/order");
         return null;
     }
 
