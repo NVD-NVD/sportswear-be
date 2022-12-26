@@ -25,6 +25,8 @@ public interface OrderService {
 
     Order changeStatusOrder(String id);
 
+    Object changeProcessingOrder(String id, String processing);
+
     Order callOffOrder(String userID, String orderID, Principal principal);
 
     List<Order> getListOrderByUserIdWithIf(String id, int status, Principal principal);
@@ -34,4 +36,5 @@ public interface OrderService {
     Order getOrderByIdForPayment(String id);
 
     Order save(Order order);
+
 }

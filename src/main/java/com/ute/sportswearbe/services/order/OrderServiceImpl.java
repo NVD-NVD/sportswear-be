@@ -113,8 +113,7 @@ public class OrderServiceImpl implements OrderService{
         order.setUpdateOn(new Date());
         order.setPayment(null);
         order.setProcessing(EnumProcessing.Chua_Xu_Ly.name());
-
-
+        
         order.setEnable(true);
 
         return orderRepository.save(order);
@@ -141,6 +140,17 @@ public class OrderServiceImpl implements OrderService{
         Order order = getOrderById(id);
         order.setEnable(!order.isEnable());
         return save(order);
+    }
+
+    @Override
+    public Object changeProcessingOrder(String id, String processing) {
+        Order order = getOrderById(id);
+        if (order == null)
+            throw new NotFoundException(String.format("Order có id %s không tồn tại.", id));
+
+        order.setProcessing(processing);
+
+        return orderRepository.save(order);
     }
 
     @Override

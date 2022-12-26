@@ -252,8 +252,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User changeEmail(String id, String email) {
         User user = getUserByID(id);
+        User u = getUserCoreByEmail(email);
+        if (user == null){
+            throw new NotFoundException("Không tìm thấy user");
+        }
+        if (u != null){
+            throw new InvalidException(String.format("Email %s đã được sử dụng", email));
+        }
 
 
+        return null;
+    }
+
+    @Override
+    public User forgotPassword(String phone, String email) {
         return null;
     }
 

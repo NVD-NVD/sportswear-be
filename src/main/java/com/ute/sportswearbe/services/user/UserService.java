@@ -45,6 +45,8 @@ public interface UserService {
     User changePassword(Principal principal, PasswordDto dto);
 
     User changeEmail(String id, String email);
+
+    User forgotPassword(String phone,String email);
     User save(User user);
 
 //    User forgotPassword();

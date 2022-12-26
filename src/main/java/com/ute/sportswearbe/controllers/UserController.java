@@ -126,23 +126,27 @@ public class UserController {
         return new ResponseEntity<>(userService.updateAvatar(principal, file), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Update avatar", notes = "User")
+    @ApiOperation(value = "User thay đổi email", notes = "User")
     @PreAuthorize("hasRole('MEMBER')")
     @PutMapping("/change")
-    public ResponseEntity<User> updateAvatar(
-            Principal principal, @RequestParam(name = "email") String email) {
+    public ResponseEntity<User> updateEmail(
+            Principal principal, @RequestParam(name = "email") String email,
+            @RequestParam(value = "return_url") String url) {
         User user = userService.getUserByPrincipal(principal);
         if (user == null){
             throw new NotFoundException("Không tìm thấy user");
         }
+
         return new ResponseEntity<>(userService.changeEmail(user.getId(), email), HttpStatus.OK);
     }
+    @ApiOperation(value = "User lấy lại mật khẩu (Quên mật khẩu)", notes = "User")
+    @PutMapping("/forgot/password")
+    public ResponseEntity<User> forgotPassword(
+            @RequestParam(name = "phone") String phone,
+            @RequestParam(value = "email") String email) {
 
-//    @ApiOperation(value = "Get avatar")
-//    @GetMapping("/avatar/{filename}")
-//    public ResponseEntity<?> getAvatar(@PathVariable("filename") String filename){
-//        return new ResponseEntity<>(userService.getAvatar(filename), HttpStatus.OK);
-//    }
+        return new ResponseEntity<>(userService.forgotPassword(phone, email), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Admin thay đổi trạng thái kích hoạt tài khoản user", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")
@@ -164,8 +168,44 @@ public class UserController {
     @ApiOperation(value = "Admin edit thông tin các tài khoản")
     @PutMapping("/admin/update")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateOrderAccount(@RequestParam(value = "userID") String id,
-                                                @RequestParam(value = "dto") User user){
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity<?> updateUserAccount(@RequestParam(value = "userID") String id,
+                                               @RequestParam(value = "name", required = false, defaultValue = "") String name,
+                                               @RequestParam(value = "email", required = false, defaultValue = "") String email,
+                                               @RequestParam(value = "birthday", required = false, defaultValue = "01-01-1900") String birthday,
+                                               @RequestParam(value = "gender", required = false, defaultValue = "") String gender,
+                                               @RequestParam(value = "address_number", required = false, defaultValue = "") String number,
+                                               @RequestParam(value = "address_street", required = false, defaultValue = "") String street,
+                                               @RequestParam(value = "address_ward", required = false, defaultValue = "") String ward,
+                                               @RequestParam(value = "address_district", required = false, defaultValue = "") String district,
+                                               @RequestParam(value = "address_city", required = false, defaultValue = "") String city,
+                                               @RequestParam(value = "address_country", required = false, defaultValue = "") String country
+    ){
+        User user = userService.getUserByID(id);
+        if (user == null){
+            throw new NotFoundException(String.format("Không tìm thấy user có id %s", id));
+        }
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date birthday_new = simpleDateFormat.parse(birthday);
+            user = userService.updateUserInfo(user.getId(), name, birthday_new, gender, number, street, ward, district, city, country);
+        }catch (ParseException ex){
+            System.out.println("User update info: Can't convert date birthday");
+        }
+        if (!email.isEmpty() || email != null){
+            User u = userService.getUserCoreByEmail(email);
+            if (u == null){
+                user.setEmail(email);
+                user = userService.save(user);
+            }
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
+//    @ApiOperation(value = "Admin edit thông tin các tài khoản")
+//    @PutMapping("/admin/update")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<?> updateUserAccount(@RequestParam(value = "userID") String id,
+//                                                @RequestParam(value = "dto") User user){
+//        return new ResponseEntity<>(null, HttpStatus.OK);
+//    }
+
 }

@@ -26,12 +26,6 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "Get list name Category")
-//    @GetMapping
-//    public ResponseEntity<?> getListNameCategory(){
-//        return new ResponseEntity<>(categoryService.getListNameCategory(), HttpStatus.OK);
-//    }
-
     @ApiOperation(value = "Get Category by id")
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable String id){
@@ -45,20 +39,20 @@ public class CategoryController {
             @RequestParam(name = "page", required = false, defaultValue = "${paging.default.page}") int page,
             @RequestParam(name = "size", required = false, defaultValue = "${paging.default.size}") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
-            @RequestParam(name = "column", required = false, defaultValue = "name") String column) {
+            @RequestParam(name = "column", required = false, defaultValue = "title") String column) {
         return new ResponseEntity<>(categoryService.getCategoryPaging(search, page, size, sort, column), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get danh sách sản phẩm của 1 Category có phân trang")
-    @PostMapping("/paging/{id}")
-    public ResponseEntity<Page<?>> getproductOfCategoryPaging(
-            @PathVariable String id,
-            @RequestParam(name = "page", required = false, defaultValue = "${paging.default.page}") int page,
-            @RequestParam(name = "size", required = false, defaultValue = "${paging.default.size}") int size,
-            @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
-            @RequestParam(name = "column", required = false, defaultValue = "productsOfCategory") String column) {
-        return new ResponseEntity<>(categoryService.getProductFromCategoryPaging(id, page, size, sort, column), HttpStatus.OK);
-    }
+//    @ApiOperation(value = "Get danh sách sản phẩm của 1 Category có phân trang")
+//    @PostMapping("/paging/{id}")
+//    public ResponseEntity<Page<?>> getproductOfCategoryPaging(
+//            @PathVariable String id,
+//            @RequestParam(name = "page", required = false, defaultValue = "${paging.default.page}") int page,
+//            @RequestParam(name = "size", required = false, defaultValue = "${paging.default.size}") int size,
+//            @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
+//            @RequestParam(name = "column", required = false, defaultValue = "productsOfCategory") String column) {
+//        return new ResponseEntity<>(categoryService.getProductFromCategoryPaging(id, page, size, sort, column), HttpStatus.OK);
+//    }
 
     @ApiOperation(value = "Admin tạo mới 1 category(name)", notes = "Admin")
     @PreAuthorize("hasRole('ADMIN')")

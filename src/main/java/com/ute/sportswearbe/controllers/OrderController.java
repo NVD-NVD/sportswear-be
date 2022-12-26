@@ -103,4 +103,13 @@ public class OrderController {
     public ResponseEntity<Order> changeStatusOrder(@PathVariable(value = "id") String id){
         return new ResponseEntity<>(orderService.changeStatusOrder(id), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Admin xử lý đơn hàng", notes = "Admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/processing")
+    public ResponseEntity<?> changeProcessingOrder(
+            @RequestParam(value = "id") String id,
+            @RequestParam(value = "processing") String processing){
+        return new ResponseEntity<>(orderService.changeProcessingOrder(id, processing), HttpStatus.OK);
+    }
 }
