@@ -1,11 +1,15 @@
 package com.ute.sportswearbe.config;
 
 import com.ute.sportswearbe.entities.Category;
+import com.ute.sportswearbe.entities.Order;
 import com.ute.sportswearbe.entities.Product;
 import com.ute.sportswearbe.entities.User;
+import com.ute.sportswearbe.entities.embedded.EmbeddedProductsInOrder;
 import com.ute.sportswearbe.repositories.CategoryRepository;
+import com.ute.sportswearbe.repositories.OrderRepository;
 import com.ute.sportswearbe.repositories.UserRepository;
 import com.ute.sportswearbe.services.category.CategoryService;
+import com.ute.sportswearbe.services.order.OrderService;
 import com.ute.sportswearbe.services.product.ProductService;
 import com.ute.sportswearbe.services.user.UserService;
 import com.ute.sportswearbe.utils.enums.EnumGender;
@@ -40,6 +44,10 @@ public class DataSeedingListener implements CommandLineRunner {
     private CategoryService categoryService;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -53,10 +61,49 @@ public class DataSeedingListener implements CommandLineRunner {
             user.setPhone("0989542812");
             user.setGender(EnumGender.Male.name());
             user.setBirthday(new SimpleDateFormat("dd-MM-yyyy").parse("20-03-1997"));
+            user.setAvatar(host+"/rest/image/avatar/"+avatar);
             user.setCreatedOn(new Date());
             user.setUpdateOn(new Date());
             userRepository.save(user);
         }
+//        List<Order> orders = orderService.getAllOrder();
+//        List<Order> order_n= new ArrayList<>();
+//        Iterator<Order> iterator= orders.iterator();
+//        while (iterator.hasNext()){
+//            Order order_iter = iterator.next();
+//            Order order = new Order();
+//            order.setId(order_iter.getId());
+//            order.setUser(order_iter.getUser());
+//
+//            List<EmbeddedProductsInOrder> productsInOrder_iter = order_iter.getProductsInOrder();
+//            List<EmbeddedProductsInOrder> productsInOrder_new = new ArrayList<>();
+//            Iterator<EmbeddedProductsInOrder> products_iter = productsInOrder_iter.iterator();
+//            while (products_iter.hasNext()){
+//                EmbeddedProductsInOrder inOrder= products_iter.next();
+//                EmbeddedProductsInOrder newProInOrder = new EmbeddedProductsInOrder();
+//                Product product = productService.getProductById(inOrder.getProduct().getId());
+//                newProInOrder.setProduct(product);
+//                newProInOrder.setQuantity(inOrder.getQuantity());
+//                newProInOrder.setOptions(inOrder.getOptions());
+//                newProInOrder.setPrice(inOrder.getPrice());
+//                newProInOrder.setDiscount(inOrder.getDiscount());
+//                newProInOrder.setTotal(inOrder.getTotal());
+//                productsInOrder_new.add(newProInOrder);
+//            }
+//            order.setProductsInOrder(productsInOrder_new);
+//            order.setTotal(order_iter.getTotal());
+//            order.setAddress(order_iter.getAddress());
+//            order.setPhone(order_iter.getPhone());
+//            order.setNote(order_iter.getNote());
+//            order.setProcessing(order_iter.getProcessing());
+//            order.setPayment(order_iter.getPayment());
+//            order.setCreatedOn(order_iter.getCreatedOn());
+//            order.setUpdateOn(order_iter.getUpdateOn());
+//            order.setEnable(order_iter.isEnable());
+//            order_n.add(order);
+//        }
+//        orderRepository.deleteAll();
+//        order_n.forEach((e) -> orderService.save(e));
 //        if (userRepository.count() == 0){
 //            User user = new User();
 //            user.setName("Admin");

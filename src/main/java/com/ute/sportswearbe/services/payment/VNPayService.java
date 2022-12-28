@@ -4,6 +4,7 @@ import com.ute.sportswearbe.dtos.TransactionStatusDto;
 import com.ute.sportswearbe.entities.Order;
 import com.ute.sportswearbe.entities.Transaction;
 import com.ute.sportswearbe.entities.User;
+import com.ute.sportswearbe.entities.embedded.EmbeddedOption;
 import com.ute.sportswearbe.entities.embedded.EmbeddedPayment;
 import com.ute.sportswearbe.exceptions.InvalidException;
 import com.ute.sportswearbe.models.PaymentResp;
@@ -158,8 +159,9 @@ public class VNPayService implements PaymentService{
         Transaction transaction = updateTransaction(amount, bankCode, bankTranNo,
                                         cardType, orderInfo,payDate, responseCode, tmnCode, transactionNo,
                                         txnRef,secureHashType,secureHash);
-
-        order.setProcessing(EnumPaymentProcess.Da_Thanh_Toan.name());
+        EmbeddedPayment payment = order.getPayment();
+        payment.setProcessing(EnumPaymentProcess.Da_Thanh_Toan.name());
+        order.setPayment(payment);
         order = orderService.save(order);
         transaction.setOrder(order);
         transactionService.save(transaction);
