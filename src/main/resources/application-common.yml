@@ -1,10 +1,6 @@
 spring:
   application:
     name: sportswear-be
-  data:
-    mongodb:
-      uri: mongodb+srv://NVD-NVD:1gVDdiq1RKs2LVh2@cluster0.7hkjpog.mongodb.net/?retryWrites=true&w=majority
-      database: sportswear-database
   servlet:
     multipart:
       enabled: true
@@ -22,17 +18,11 @@ spring:
 jwt:
   secret: K1LqzK6eeD0g0BfgOg7S
 
-host: "https://sportswear-be.herokuapp.com"
-
 default:
   token_type: "Bearer"
   password: 12345678
   avatar: "default.png"
   updatingInfoCloth: "Đang cập nhập"
-
-upload:
-  url: "https://sportswear-be.herokuapp.com/"
-  path: "/uploads/"
 
 mail:
   MyConstants:

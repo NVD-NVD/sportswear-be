@@ -102,15 +102,18 @@ public class ProductServiceImpl implements ProductService {
                 products.add(product);
                 category.setProductsOfCategory(products);
             }
-            else if (!e.getId().isEmpty()){
+            else if (!e.getId().isEmpty() || e.getId() != null){
                 System.out.println("cate Id != null : " + e.getId());
                 category = categoryService.getCategoryById(e.getId());
-                e.setId(category.getId());
-                List<Product> products = new ArrayList<>();
-                products.addAll(category.getProductsOfCategory());
-                products.add(product);
-                category.setProductsOfCategory(products);
-                em.add(new EmbeddedCategory(category.getId(), category.getTitle()));
+                if (category != null)
+                {
+                    e.setId(category.getId());
+                    List<Product> products = new ArrayList<>();
+                    products.addAll(category.getProductsOfCategory());
+                    products.add(product);
+                    category.setProductsOfCategory(products);
+                    em.add(new EmbeddedCategory(category.getId(), category.getTitle()));
+                }
             }
         }
 
