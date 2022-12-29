@@ -180,9 +180,9 @@ public class OrderServiceImpl implements OrderService{
             throw new NotFoundException("Không tìm thấy user");
         }
         Order order = getOrderById(orderID);
-        if (order.getUser().getId().equals(userID)){
-            throw new NotFoundException(String.format("Huy đơn không thành công, đơn không đúng user"));
-        }
+//        if (order.getUser().getId().equals(userID)){
+//            throw new NotFoundException(String.format("Huy đơn không thành công, đơn không đúng user"));
+//        }
         if (!order.getProcessing().equals("Chua_Xu_Ly")){
             throw new InvalidException("Đơn hàng không thể huy, do đã được xử lý.");
         }
