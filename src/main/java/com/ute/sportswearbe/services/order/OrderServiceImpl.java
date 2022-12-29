@@ -174,8 +174,20 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order callOffOrder(String userID, String orderID, Principal principal) {
-        return null;
+    public Order callOffOrder(String userID, String orderID) {
+        User user = userService.getUserByID(userID);
+        if (user == null){
+            throw new NotFoundException("Không tìm thấy user");
+        }
+        Order order = getOrderById(orderID);
+        if (order.getUser().getId().equals(userID)){
+            throw new NotFoundException(String.format("Huy đơn không thành công, đơn không đúng user"));
+        }
+        if (!order.getProcessing().equals("Chua_Xu_Ly")){
+            throw new InvalidException("Đơn hàng không thể huy, do đã được xử lý.");
+        }
+        order.setEnable(false);
+        return save(order);
     }
 
     @Override

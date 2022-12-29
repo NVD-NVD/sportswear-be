@@ -27,7 +27,7 @@ public interface OrderService {
 
     Object changeProcessingOrder(String id, String processing);
 
-    Order callOffOrder(String userID, String orderID, Principal principal);
+    Order callOffOrder(String userID, String orderID);
 
     List<Order> getListOrderByUserIdWithIf(String id, int status, Principal principal);
 

@@ -92,9 +92,13 @@ public class OrderController {
             Principal principal){
         User user = userService.getUserByPrincipal(principal);
         if (user == null){
+            throw new NotFoundException(String.format("Huỹ đơn không thành công. Không tìm thấy user có id %s", user.getId()));
+        }
+        User userToken = userService.getUserByPrincipal(principal);
+        if (userToken == null){
             throw new NotFoundException("Không tìm thấy user");
         }
-        return new ResponseEntity<>(orderService.callOffOrder(user.getId(), orderID, principal), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.callOffOrder(user.getId(), orderID), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Admin thay đổi trang thái đơn hàng", notes = "Admin")
