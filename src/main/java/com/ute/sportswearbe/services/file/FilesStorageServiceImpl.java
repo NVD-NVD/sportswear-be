@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOException;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
@@ -19,6 +20,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -69,6 +72,27 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> getFileName() {
+        String dir  = currentDirectory + uploadFolder + "products";
+        List<String> listFileName = new ArrayList<>();
+        try {
+            listFileName = listFilesUsingFilesList(dir);
+        }
+        catch (IOException ex){
+        }
+        return listFileName;
+    }
+    private List<String> listFilesUsingFilesList(String dir) throws IOException {
+        try (Stream<Path> stream = Files.list(Paths.get(dir))) {
+            return stream
+                    .filter(file -> !Files.isDirectory(file))
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
         }
     }
 }

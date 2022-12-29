@@ -4,6 +4,8 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://NVD-NVD:1gVDdiq1RKs2LVh2@cluster0.7hkjpog.mongodb.net/?retryWrites=true&w=majority
+#      host: localhost
+#      port: 27017
       database: sportswear-database
   servlet:
     multipart:
@@ -19,10 +21,18 @@ spring:
     date-format: dd-MM-yyyy HH:mm:ss
     time-zone: Asia/Ho_Chi_Minh
 
+host: "https://sportswear-be.herokuapp.com"
+upload:
+  url: "https://sportswear-be.herokuapp.com/"
+  path: "/uploads/"
+
+#host: "http://localhost:8080"
+#upload:
+#  url: "http://localhost:8080/"
+#  path: "/uploads/"
+
 jwt:
   secret: K1LqzK6eeD0g0BfgOg7S
-
-host: "https://sportswear-be.herokuapp.com"
 
 default:
   token_type: "Bearer"
@@ -30,9 +40,7 @@ default:
   avatar: "default.png"
   updatingInfoCloth: "Đang cập nhập"
 
-upload:
-  url: "https://sportswear-be.herokuapp.com/"
-  path: "/uploads/"
+
 
 mail:
   MyConstants:

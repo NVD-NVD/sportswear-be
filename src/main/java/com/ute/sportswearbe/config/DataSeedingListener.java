@@ -1,13 +1,8 @@
 package com.ute.sportswearbe.config;
 
-import com.ute.sportswearbe.entities.Category;
-import com.ute.sportswearbe.entities.Order;
-import com.ute.sportswearbe.entities.Product;
-import com.ute.sportswearbe.entities.User;
+import com.ute.sportswearbe.entities.*;
 import com.ute.sportswearbe.entities.embedded.EmbeddedProductsInOrder;
-import com.ute.sportswearbe.repositories.CategoryRepository;
-import com.ute.sportswearbe.repositories.OrderRepository;
-import com.ute.sportswearbe.repositories.UserRepository;
+import com.ute.sportswearbe.repositories.*;
 import com.ute.sportswearbe.services.category.CategoryService;
 import com.ute.sportswearbe.services.order.OrderService;
 import com.ute.sportswearbe.services.product.ProductService;
@@ -48,10 +43,18 @@ public class DataSeedingListener implements CommandLineRunner {
     private OrderService orderService;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     @Override
     public void run(String... args) throws Exception {
 //        userRepository.deleteAll();
+//        orderRepository.deleteAll();
+//        categoryRepository.deleteAll();
+//        productRepository.deleteAll();
+//        transactionRepository.deleteAll();
         if (userRepository.count() == 0){
             User user = new User();
             user.setName("Datng");
@@ -113,6 +116,7 @@ public class DataSeedingListener implements CommandLineRunner {
 //            user.setPhone("0989542812");
 //            user.setGender(EnumGender.Male.name());
 //            user.setBirthday(new SimpleDateFormat("dd-MM-yyyy").parse("20-03-1997"));
+//            user.setAvatar(host+"/rest/image/avatar/"+avatar);
 //            user.setCreatedOn(new Date());
 //            user.setUpdateOn(new Date());
 //            userRepository.save(user);
@@ -125,19 +129,19 @@ public class DataSeedingListener implements CommandLineRunner {
 //                userService.save(user);
 //            }
 //        }
-////        if (productService.getAllProduct().size() > 0){
-////            List<Product> products = productService.getAllProduct();
-////            Iterator<Product> iterator = products.iterator();
-////            while (iterator.hasNext()){
-////                Product product = iterator.next();
-////                List<String> images = product.getImages()
-////                                        .stream().map(e ->{
-////                                            return host+"/rest/image/"+e;
-////                        }).collect(Collectors.toList());
-////                System.out.printf(product.getId());
-////                images.forEach(e -> System.out.printf(" " +e));
-////            }
-////        }
+//        if (productService.getAllProduct().size() > 0){
+//            List<Product> products = productService.getAllProduct();
+//            Iterator<Product> iterator = products.iterator();
+//            while (iterator.hasNext()){
+//                Product product = iterator.next();
+//                List<String> images = product.getImages()
+//                                        .stream().map(e ->{
+//                                            return host+"/rest/image/"+e;
+//                        }).collect(Collectors.toList());
+//                System.out.printf(product.getId());
+//                images.forEach(e -> System.out.printf(" " +e));
+//            }
+//        }
 //        if (categoryRepository.count() == 0){
 //            List<Category> list = new ArrayList<>();
 //            if (categoryService.getCategoryByTitle("New") == null)
@@ -149,5 +153,6 @@ public class DataSeedingListener implements CommandLineRunner {
 //            categoryRepository.saveAll(list);
 //        }
     }
+    
 
 }

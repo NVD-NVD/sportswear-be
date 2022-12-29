@@ -15,4 +15,6 @@ public interface FilesStorageService {
     List<String> uploadFiles(MultipartFile[] files, String directory, String fileName);
 
     Resource loadFile(String filePath);
+
+    List<String> getFileName();
 }
